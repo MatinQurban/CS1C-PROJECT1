@@ -1,0 +1,32 @@
+**************************************************
+* PROGRAMMED BY : Spencer Klug
+* CLASS         : CS1B
+* SECTION       : MW: 7:30p - 9:50p
+* LAB #5        : OOP - DVD Movie List
+**************************************************
+
+What input file would you like to use? input.txt
+What output file would you like to use? output.txt
+
+Name: Yankee Doodle Dandee
+Name: X-Men
+Name: Whip It
+Name: Unfinished Life, An
+Name: Thelma and Louise
+Name: Shawshank Redemption, The
+Name: Shackelton
+Name: Secondhand Lions
+Name: Rent
+Name: Pursuit of Happyness
+Name: Pirates of the Caribbean 1: The Curse of the Black Pearl
+Name: Pianist, The
+Name: Pay it Forward
+Name: Miss Petigrew Lives for a Day
+Name: Invictus
+Name: Good Night, Good Luck
+Name: Five People You Meet in Heaven, The
+Name: Cinderella Man
+Name: Bagger Vance, The Legend of
+Name: Antwone Fisher
+
+Writing output file output.txt
