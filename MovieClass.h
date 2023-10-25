@@ -4,40 +4,32 @@
 #define MOVIECLASS_H
 
 #include "DiskClass.h"
+#include <fstream>
 
+using namespace std;
 
 class Movie : public Disk {
-
 public:
     Movie();
-    Movie(string title, string genre, string synopsis, int releaseYear, int rating, string leadingActor, string supportActor, string format);
+    Movie(string title, string genre, string synopsis, int releaseYear, int rating, string leadingActor, string bluRayOrDVD);
     ~Movie();
-
+    
     //getters
-    string getLeadingActor();
-    string getSupportActor();
-    string getFormat();
+    string getLeadingActor() const;
+    string getBluRayOrDVD() const;
+    double getPrice() override;
 
     //setters
     void setLeadingActor(string leadingActor);
-    void setSupportActor(string supportActor);
-    void setFormat(string format);
+    void createListOfSellableItems(const string& inputFileName, vector<Movie>& movies) override;
 
     //pure virtual function
-    void setPrice(int rating) override;
 
     //print
     void displayInfo() const override;
 
-
-
 private:
     string leadingActor;
-    string supportActor;
-    string format;
-
+    string bluRayOrDVD;
 };
-
-
-
 #endif // MOVIECLASS_H

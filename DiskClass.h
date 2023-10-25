@@ -1,13 +1,13 @@
 //Class to handle the base class of disk
 
-
 #ifndef DISKCLASS_H
 #define DISKCLASS_H
 
-
 #include <iostream>
+#include <iomanip>
 #include <string>
-
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -23,6 +23,7 @@ public:
     string getSynopsis();
     int getReleaseYear();
     int getRating();
+    virtual double getPrice() = 0;
 
 
     //setters
@@ -34,11 +35,9 @@ public:
     
     //print
     virtual void displayInfo() const;
+    virtual void createListOfSellableItems(const string& inputFileName, vector<Disk>& disks) = 0;
 
     //pure virtual function
-    virtual void setPrice(int rating);
-
-
 
 protected:
     string title;
@@ -46,9 +45,6 @@ protected:
     string synopsis;
     int releaseYear;
     int rating;
-    double price;
-
-
+    //double price; Price will be calculated based on rating, so no variable needed. Everytime you want to get the price, calculate it.
 };
-
-#endif
+#endif 
