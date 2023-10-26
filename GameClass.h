@@ -7,35 +7,31 @@
 #include "DiskClass.h"
 
 class Game : public Disk {
-public:
-    Game();
-    Game(string title, string genre, string synopsis, int releaseYear, int rating, string primaryConsole, int maxCoopCount, bool isMultiplayer, bool microtransactions);
-    ~Game();
+    public:
+        Game();
+        Game(string title, string genre, string synopsis, int releaseYear, int rating, string primaryConsole, int maxCoopCount);
+        ~Game();
 
-    //getters
-    string getPrimaryConsole() const;
-    int getMaxCoopCount() const;
-    bool getIsMultiplayer() const;
-    bool getMicrotransactions() const;
-    double getPrice() override;
+        //getters
+        string getPrimaryConsole() const;
+        int getMaxCoopCount() const;
+        double getPrice() const override;
 
-    //setters
-    void setPrimaryConsole(string primaryConsole);
-    void setMaxCoopCount(int maxCoopCount);
-    void setIsMultiplayer(bool isMultiplayer);
-    void setMicrotransactions(bool microtransactions);
+        //setters
+        void setPrimaryConsole(string primaryConsole);
+        void setMaxCoopCount(int maxCoopCount);
 
-    void createListOfSellableItems(const string& inputFileName, vector<Game>& games) override;
+        void createListOfSellableItems(const string& inputFileName, vector<Game>& games) const;
+        void displayListOfSellableItems(const string &outputFileName, vector<Game> &games) const;
     
-    //pure virtual function
+        // pure virtual function
 
-    //print
-    void displayInfo() const override;
+        //print
+        void displayInfo() const override;
 
-private:
-    string primaryConsole;
-    int maxCoopCount;
-    bool isMultiplayer;
-    bool microtransactions;
+    private:
+        double calculatePrice() const;
+        string primaryConsole;
+        int maxCoopCount;
 };
 #endif // GAMECLASS_H

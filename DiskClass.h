@@ -7,44 +7,48 @@
 #include <iomanip>
 #include <string>
 #include <fstream>
-#include <sstream>
 
 using namespace std;
 
 class Disk {
-public:
-    Disk();
-    Disk(string title, string genre, string synopsis, int releaseYear, int rating);
-    ~Disk();
+    public:
+        Disk();
+        Disk(string title, string genre, string synopsis, int releaseYear, int rating);
+        virtual ~Disk();
 
-    //getters
-    string getTitle();
-    string getGenre();
-    string getSynopsis();
-    int getReleaseYear();
-    int getRating();
-    virtual double getPrice() = 0;
+        //getters
+        string getTitle() const;
+        string getGenre() const;
+        string getSynopsis() const;
+        int getReleaseYear() const;
+        int getRating() const;
 
 
-    //setters
-    void setTitle(string title);
-    void setGenre(string genre);
-    void setSynopsis(string synopsis);
-    void setReleaseYear(int releaseYear);
-    void setRating(int rating);
+        //setters
+        void setTitle(string title);
+        void setGenre(string genre);
+        void setSynopsis(string synopsis);
+        void setReleaseYear(int releaseYear);
+        void setRating(int rating);
     
-    //print
-    virtual void displayInfo() const;
-    virtual void createListOfSellableItems(const string& inputFileName, vector<Disk>& disks) = 0;
+        //print
+        friend ostream& operator << (ostream& out, const Disk &rhs);
+        void createListOfSellableItems(const string& inputFileName, vector<Disk>& disks);
+        virtual void displaySpecificInfo() const = 0;
 
-    //pure virtual function
-
-protected:
-    string title;
-    string genre;
-    string synopsis;
-    int releaseYear;
-    int rating;
-    //double price; Price will be calculated based on rating, so no variable needed. Everytime you want to get the price, calculate it.
+        //pure virtual function
+        virtual double getPrice() const = 0;
+        bool operator == (const Disk& rhs) const;
+        bool operator != (const Disk& rhs) const;
+        
+    protected:
+        string title;
+        string genre;
+        string synopsis;
+        int releaseYear;
+        int rating;
+        //double price; Price will be calculated based on rating, so no variable needed. Everytime you want to get the price, calculate it.
 };
+
+
 #endif 

@@ -1,47 +1,102 @@
 #include "GameClass.h"
 
-GameClass::Game()
+Game::Game()
 {
-    primaryConsole = " ";
+    primaryConsole = "";
     maxCoopCount = 0;
 }
 
-GameClass::Game(string title, string genre, string synopsis, int releaseYear, int rating, string primaryConsole, int maxCoopCount, bool isMultiplayer, bool microtransactions)
+Game::Game(string title, string genre, string synopsis, int releaseYear, int rating, string primaryConsole, int maxCoopCount)
 {
-    this->gameTitle = title;
-    this->gameGenre = genre;
-    this->gameSynopsis = synopsis;
+    this->title = title;
+    this->genre = genre;
+    this->synopsis = synopsis;
     this->releaseYear = releaseYear;
-    this->gameRating = rating;
+    this->rating = rating;
     this->primaryConsole = primaryConsole;
     this->maxCoopCount = maxCoopCount;
-    this->isMultiplayer = isMultiplayer;
-    this->microtransactions = microtransactions;
 }
 
-GameClass::~Game() { }
+void Game::createListOfSellableItems(const string& inputFileName, vector<Game>& games) const
+{
+    ifstream inFile(inputFileName);
 
-string GameClass::getPrimaryConsole() const
+    if (!inFile) {
+        cout << "Error opening the input file." << endl;
+        return;
+    }
+
+    string title;
+    string genre;
+    string primaryConsole;
+    int maxCoopCount;
+    int releaseYear;
+    int rating;
+    string synopsis;
+
+    while (inFile && !inFile.eof()) 
+    {
+        getline(inFile, title);
+        getline(inFile, genre);
+        getline(inFile, primaryConsole);
+        inFile >> maxCoopCount;
+        inFile >> releaseYear;
+        inFile >> rating;
+        inFile.ignore(10000, '\n');
+        getline(inFile, synopsis);
+        inFile.ignore(10000, '\n');
+
+        Game game(title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount);
+
+        games.push_back(&game);
+
+    }
+    
+    inFile.close();
+}
+
+void Game::displayListOfSellableItems(const string &outputFileName, vector<Game> &games) const
+{
+    fstream outFile(outputFileName, ios::out | ios::app);
+
+    if (!outFile)
+    {
+        cout << "Error opening the output file." << endl;
+        return;
+    }
+
+    for (int i = 0; i < games.size(); i++)
+    {
+        outFile << "Title: " << title << endl;
+        outFile << "Genre: " << genre << endl;
+        outFile << "Primary Console: " << primaryConsole << endl;
+        outFile << "Max Coop Count: " << maxCoopCount << endl;
+        outFile << "Release Year: " << releaseYear << endl;
+        outFile << "Rating: " << rating << endl;
+        outFile << "Synopsis: " << synopsis << endl;
+        outFile << endl;
+    }
+
+    outFile.close();
+}
+
+Game::~Game() { }
+
+string Game::getPrimaryConsole() const
 {
     return primaryConsole;
 }
 
-int GameClass::getMaxCoopCount() const
+int Game::getMaxCoopCount() const
 {
     return maxCoopCount;
 }
 
-bool GameClass::getIsMultiplayer() const
-{
-    return
+double Game::getPrice() const {
+    return calculatePrice();
 }
 
-bool GameClass::getMicrotransactions() const
-{
-    return
-}
-
-double GameClass::getPrice() {
+double Game::calculatePrice() const {
         if (rating >= 80) {
         return 69.99;
     } else if (percentageGrade >= 60) {
@@ -51,4 +106,14 @@ double GameClass::getPrice() {
     } else {
         return 19.99;
     }
+}
+
+void Game::setPrimaryConsole(string primaryConsole)
+{
+    this->primaryConsole = primaryConsole;
+}
+    
+void Game::setMaxCoopCount(int maxCoopCount)
+{
+    this->maxCoopCount = maxCoopCount;
 }

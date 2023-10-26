@@ -1,15 +1,97 @@
-#include "DiskCla"
+#include "DiskClass.h"
 
-double Disk::getPrice() {
-    if (percentageGrade >= 90.0) {
-        return 'A';
-    } else if (percentageGrade >= 80.0) {
-        return 'B';
-    } else if (percentageGrade >= 70.0) {
-        return 'C';
-    } else if (percentageGrade >= 60.0) {
-        return 'D';
-    } else {
-        return 'F';
-    }
+Disk::Disk() 
+{
+    title = "";
+    genre = "";
+    synopsis = "";
+    releaseYear = 0;
+    rating = 0;
+}
+
+Disk::Disk(string title, string genre, string synopsis, int releaseYear, int rating)
+{
+    this->title = title;
+    this->genre = genre;
+    this->synopsis = synopsis;
+    this->releaseYear = releaseYear;
+    this->rating = rating;
+}
+
+
+Disk::~Disk() { }
+
+string Disk::getTitle() const
+{
+    return title;
+}
+    
+string Disk::getGenre() const
+{
+    return genre;
+}
+    
+string Disk::getSynopsis() const
+{
+    return synopsis;
+}
+    
+int Disk::getReleaseYear() const
+{
+    return releaseYear;
+}
+    
+int Disk::getRating() const
+{
+    return rating;
+}
+
+void Disk::setTitle(string title)
+{
+    this->title = title;
+}
+    
+void Disk::setGenre(string genre)
+{
+    this->genre = genre;
+}
+    
+void Disk::setSynopsis(string synopsis)
+{
+    this->synopsis = synopsis;
+}
+    
+void Disk::setReleaseYear(int releaseYear)
+{
+    this->releaseYear = releaseYear;
+}
+
+void Disk::setRating(int rating)
+{
+    this->rating = rating;
+}
+
+ostream& operator <<(ostream& out, const Disk &rhs)
+{
+      out << "Title: " << rhs.getTitle() << "." << endl; 
+      out << "Genre: " << rhs.getGenre() << "." << endl; 
+      out << "Synopsis: "  << rhs.getSynopsis() << "." << endl;
+      out << "Release Year: " << rhs.getReleaseYear() << "." << endl;
+      out << "Rating: " << rhs.getRating() << "." << endl;
+      out << "Price: " << rhs.getPrice() << ".\n";
+  
+    return out;   
+}
+
+bool Disk::operator ==(const Disk& rhs) const {
+    return getTitle() == rhs.getTitle() &&
+           getGenre() == rhs.getGenre() &&
+           getSynopsis() == rhs.getSynopsis() &&
+           getReleaseYear() == rhs.getReleaseYear() &&
+           getRating() == rhs.getRating() &&
+           getPrice() == rhs.getPrice();
+}
+
+bool Disk::operator !=(const Disk& rhs) const {
+  return !(* == rhs);
 }
