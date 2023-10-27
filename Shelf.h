@@ -2,7 +2,10 @@
 
 class Shelf {
     public:
-    void populate
+    void populateShelf(vector<Disk*>& disks);
+
+    //print
+    void displayAllDisks() const;
 
     private:
         vector<Disk*> allDisks;
