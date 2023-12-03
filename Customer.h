@@ -3,33 +3,35 @@
 #include "Disk.h"
 #include "Transaction.h"
 
-class Customer {
+class Customer 
+{
     public:
         Customer();
-        Customer(string firstName, string lastName, long phoneNumber, double budget);
+        Customer(string firstName, string lastName, string phoneNumber, double budget);
         ~Customer();
         
         // getters
         string getFirstName() const;
         string getLastName() const;
-        long getPhoneNumber() const;
+        string getPhoneNumber() const;
         double getBudget() const;
 
         // setters
         void setFirstName(string firstName);
         void setLastName(string lastName);
-        void setPhoneNumber(long phoneNumber);
+        void setPhoneNumber(string phoneNumber);
         void setBudget(double budget);
+        
+        void addTransaction(const Transaction &item);
 
         // print
         void displayTransactionHistory();
-        void addTransaction(const Transaction &item);
 
     private:
         string firstName;
         string lastName;
-        long phoneNumber;
+        string phoneNumber;
         double budget;   
         vector<Transaction> transactions;
 };
-#endif
+#endif // CUSTOMER_H

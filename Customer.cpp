@@ -4,11 +4,11 @@ Customer::Customer()
 {
     firstName = "";
     lastName = "";
-    phoneNumber = 0;
+    phoneNumber = "";
     budget = 0.0;
 }
 
-Customer::Customer(string firstName, string lastName, long phoneNumber, double budget)
+Customer::Customer(string firstName, string lastName, string phoneNumber, double budget)
 {
     this->firstName = firstName;
     this->lastName = lastName;
@@ -28,7 +28,7 @@ string Customer::getLastName() const
     return lastName;
 }
 
-long Customer::getPhoneNumber() const
+string Customer::getPhoneNumber() const
 {
     return phoneNumber;
 }
@@ -48,7 +48,7 @@ void Customer::setLastName(string lastName)
     this->lastName = lastName;
 }
 
-void Customer::setPhoneNumber(long phoneNumber)
+void Customer::setPhoneNumber(string phoneNumber)
 {
     this->phoneNumber = phoneNumber;
 }

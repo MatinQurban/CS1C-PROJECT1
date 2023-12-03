@@ -56,9 +56,9 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
         getline(inFile, synopsis);
         inFile.ignore(10000, '\n');
 
-        Movie movies(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
+        Movie movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
 
-        movies.push_back(&movies);
+        movie.push_back(&movies);
 
     }
     
@@ -90,11 +90,13 @@ void Movie::displayListOfSellableItems(const string &outputFileName, vector<Movi
     outFile.close();
 }
 
-double Movie::getPrice() const {
+double Movie::getPrice() const 
+{
     return calculatePrice();
 }
 
-double Movie::calculatePrice() const {
+double Movie::calculatePrice() const 
+{
         if (rating >= 4) {
         return 39.99;
     } else if (rating >= 3) {
@@ -110,7 +112,6 @@ void Movie::setLeadingActor(string leadingActor)
 {
     this->leadingActor = leadingActor;
 }
-
 
 void Movie::displayMovieInfo() const
 {

@@ -9,17 +9,21 @@ struct Transaction_Info {
     double price;
     string firstName;
     string lastName;
-    long phoneNumber;
-} typedef Transaction_Info;
+    string phoneNumber;
+};
 
-class Register 
+class Register : public Transaction_Info
 {
     public:
-        Register(const string& diskName, const string& diskType, const double& price, const string& firstName, const string& lastName, const long& phoneNumber);
+        Register();
+        Register(vector<Transaction_Info *> Transactions);
         ~Register();
-        void newTransaction(const string& diskName, const string& diskType, const double& price, const string& firstName, const string& lastName, const long& phoneNumber);
+        void populateTransactions();
+        void dumpTransactions();
+        void newTransaction(const string& diskName, const string& diskType, const double& price, const string& firstName, const string& lastName, const string& phoneNumber);
+        bool validateTransactionFile(string line, int lineCount);
 
     private:
-        vector<Transaction_Info *> allTransactions;
+        static vector<Transaction_Info *> allTransactions;
 };
 #endif // REGISTER_H

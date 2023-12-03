@@ -48,8 +48,7 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game>& 
 
         Game game(title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount);
 
-        games.push_back(&games);
-
+        game.push_back(&games);
     }
     
     inFile.close();
@@ -96,14 +95,21 @@ double Game::getPrice() const {
     return calculatePrice();
 }
 
-double Game::calculatePrice() const {
-        if (rating >= 80) {
+double Game::calculatePrice() const 
+{
+    if (rating >= 80)
+    {
         return 69.99;
-    } else if (rating >= 60) {
+    } 
+    else if (rating >= 60) 
+    {
         return 49.99;
-    } else if (rating >= 50) {
+    } 
+    else if (rating >= 50) 
+    {
         return 29.99;
-    } else {
+    } else 
+    {
         return 19.99;
     }
 }

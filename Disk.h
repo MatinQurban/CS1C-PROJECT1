@@ -8,10 +8,10 @@
 #include <string>
 #include <fstream>
 #include <vector>
-
 using namespace std;
 
-class Disk {
+class Disk 
+{
     public:
         Disk();
         Disk(string title, string genre, string synopsis, int releaseYear, int rating);
@@ -23,7 +23,6 @@ class Disk {
         string getSynopsis() const;
         int getReleaseYear() const;
         int getRating() const;
-
 
         //setters
         void setTitle(string title);
@@ -48,8 +47,5 @@ class Disk {
         string synopsis;
         int releaseYear;
         int rating;
-        //double price; Price will be calculated based on rating, so no variable needed. Everytime you want to get the price, calculate it.
 };
-
-
 #endif // DISK_H

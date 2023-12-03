@@ -83,7 +83,8 @@ ostream& operator <<(ostream& out, const Disk &rhs)
     return out;   
 }
 
-bool Disk::operator ==(const Disk& rhs) const {
+bool Disk::operator ==(const Disk& rhs) const 
+{
     return getTitle() == rhs.getTitle() &&
            getGenre() == rhs.getGenre() &&
            getSynopsis() == rhs.getSynopsis() &&
@@ -92,6 +93,7 @@ bool Disk::operator ==(const Disk& rhs) const {
            getPrice() == rhs.getPrice();
 }
 
-bool Disk::operator !=(const Disk& rhs) const {
+bool Disk::operator !=(const Disk& rhs) const 
+{
   return !(* == rhs);
 }

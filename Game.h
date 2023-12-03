@@ -5,7 +5,8 @@
 #define GAME_H
 #include "Disk.h"
 
-class Game : public Disk {
+class Game : public Disk 
+{
     public:
         Game();
         Game(string title, string genre, string synopsis, int releaseYear, int rating, string primaryConsole, int maxCoopCount);

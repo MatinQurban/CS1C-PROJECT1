@@ -1,6 +1,9 @@
 #include "Shelf.h"
 
-Shelf::Shelf() {}
+Shelf::Shelf() 
+{ 
+    
+}
 
 Shelf::~Shelf() {}
 
@@ -36,7 +39,8 @@ bool Shelf::removeDisk(const string &diskName)
     return false;
 }
 
-void Shelf::saveTransaction(const ostream& transactionFile, const string& diskName, const string& diskType, const string& price, const string& firstName, const string& lastName, const string& phoneNumber) const {
+void Shelf::saveTransaction(const ostream& transactionFile, const string& diskName, const string& diskType, const string& price, const string& firstName, const string& lastName, const string& phoneNumber) const
+{
     transactionFile << phoneNumber << endl;
     transactionFile << diskName << endl;
     transactionFile << diskType << endl;
@@ -76,7 +80,8 @@ void Shelf::registerPreviousTransaction() {
     }
 }
 
-void Shelf::outputTransactionHistory(const string& aPhoneNumber) {
+void Shelf::outputTransactionHistory(const string& aPhoneNumber) 
+{
     //iterate through vector looking for a match for aPhone number, if found, display the next six pieces of data inside the vector as its the transaction history.
     for (const auto &disk : allDisks)
     {

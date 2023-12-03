@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "Customer.h"
 #include "Transaction.h"
+#include "Register.h"
 using namespace std;
 
 int main()
@@ -17,9 +18,6 @@ int main()
     vector<Game> games; // Changed vector type to Game
 
     game->createListOfSellableItems("inputGames.txt", games); // Passed vector of Game objects
-
-    ifstream previousTransactions;
-	inFile.open("Store_Transactions.txt");
 
     string firstName;
     string lastName;
@@ -43,9 +41,6 @@ int main()
     cin >> budget;
 
     // build customerObject(firstName, lastName, phoneNumber, budget)
-
-    ofstream transactionFile;
-    transactionFile.open("Store_Transactions.txt");
 
     bool valid = false;
 
@@ -106,30 +101,101 @@ int main()
                 if (checkStock(diskName)) {
                     cout << "\n" << diskName << " is currently in stock!" << endl;
                 }
+                else
+                {
+                    cout << "\n" << diskName << " is not in stock!" << endl;
+                }
                 break;
             }
             case 2:
             {
-                // Ask for title
-                // if (Check stock)
-                // if true, display information about game
-                // if (Confirm purchase (ask if they want to buy for x amount of dollars))
-                // if true, check if budget is >=
-                // if true, subtract disk price from budget, remove the game from the store stock
-                // Add this transaction to transaction history
-                break;
-            }
-            case 3:
+                switchValid = false;
+                while (!switchValid)
+                {
+                string diskName;
+                cout << "What is the title of the game you are looking for?";
+                getline(1000, diskName)
+                if (checkStock(diskName)) {
+                    cout << "\n" << diskName << " is currently in stock!" << endl;
+                    switchValid = true;
+                }
+                else
+                {
+                    cout << "\n" << diskName << " is not in stock!" << endl;
+                }
+                }
+                cout << //disk information
+                switchValid = false;
+                while (!switchValid)
             {
-                // Ask for title
-                // if (Check stock)
-                // if true, display information about movie
-                // if (Confirm purchase (ask if they want to buy for x amount of dollars))
-                // if true, check if budget is >=
-                // if true, subtract disk price from budget, remove the movie from the store stock
-                // Add this transaction to transaction history
-                break;
+                char validateSelection;
+                cout << "\nAre you sure you want to exit? (Y/N)";
+                cin.get(validateSelection);
+                cin.ignore(1000, '\n');
+                validateSelection = toupper(validateSelection);
+                if (validateSelection != 'Y' && validateSelection != 'N')
+                {
+                    cout << "\n**** " << validateSelection << " is an invalid entry ****" << endl;
+                    cout << "**** Please input Y or N    ****" << endl;
+                    cin.clear();
+                }
+                else
+                {
+                    if (validateSelection == 'Y' && budget > price)
+                    {
+                        cout << "You have bought " << diskName << endl;
+                        budget = budget - price;
+                        valid = false;
+                        switchValid = true;
+                    }
+                }
             }
+                break;
+        }
+            case 3: {
+                switchValid = false;
+                while (!switchValid)
+                {
+                string diskName;
+                cout << "What is the title of the movie you are looking for?";
+                getline(1000, diskName)
+                if (checkStock(diskName)) {
+                    cout << "\n" << diskName << " is currently in stock!" << endl;
+                    switchValid = true;
+                }
+                else
+                {
+                    cout << "\n" << diskName << " is not in stock!" << endl;
+                }
+                }
+                cout << //disk information
+                switchValid = false;
+                while (!switchValid)
+            {
+                char validateSelection;
+                cout << "\nAre you sure you want to exit? (Y/N)" 
+                cin.get(validateSelection);
+                cin.ignore(1000, '\n');
+                validateSelection = toupper(validateSelection);
+                if (validateSelection != 'Y' && validateSelection != 'N')
+                {
+                    cout << "\n**** " << validateSelection << " is an invalid entry ****" << endl;
+                    cout << "**** Please input Y or N    ****" << endl;
+                    cin.clear();
+                }
+                else
+                {
+                    if (validateSelection == 'Y' && budget > price)
+                    {
+                        cout << "You have bought " << diskName << endl;
+                        budget = budget - price;
+                        valid = false;
+                        switchValid = true;
+                    }
+                }
+            }
+                break;
+            }  
             case 4:
             {
                 // Show Transaction History of the Customer
@@ -153,65 +219,12 @@ int main()
             }
             }
         }
-    case 1:
-    {
-        // Check stock
-    }
-    case 2:
-    {
-        // Ask for title
-        // if (Check stock)
-        // if true, display information about game
-        // if (Confirm purchase (ask if they want to buy for x amount of dollars))
-        // if true, check if budget is >=
-        // if true, subtract disk price from budget, remove the game from the store stock
-        // Add this transaction to transaction history
-    }
-    case 3:
-        // Ask for title
-        // if (Check stock)
-        // if true, display information about movie
-        // if (Confirm purchase (ask if they want to buy for x amount of dollars))
-        // if true, check if budget is >=
-        // if true, subtract disk price from budget, remove the movie from the store stock
-        // Add this transaction to transaction history
-    }
-case 4:
-{
-    // Show Transaction History of the Customer
-case 0:
-{
-    while (!switchValid)
-    {
-        char validateSelection;
-        cout << "\nAre you sure you want to exit? (Y/N)" cin.get(validateSelection);
-        cin.ignore(1000, '\n');
-        validateSelection = toupper(validateSelection);
-        if (validateSelection != 'Y' && validateSelection != 'N')
-        {
-            cout << "\n**** " << validateSelection << " is an invalid entry ****" << endl;
-            cout << "**** Please input Y or N    ****" << endl;
-            cin.clear();
-        }
-        else
-        {
-            if (validateSelection == 'Y')
-            {
-                cout << "\nExiting program!"
-
-                    valid = false;
-                switchValid = true;
-            }
-        }
-    }
-}
 default:
 {
     cout << "\n**** Please input a number between 0 and 4 ****" << endl;
     cin.clear();
     cin.ignore(1000, '\n');
     cout << "\n";
-}
 }
 
     return 0;

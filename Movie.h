@@ -1,11 +1,10 @@
-// Movie class extends from disk class
+// Movie class derives from Disk class (pure virtual includes rating and price)
+// Movie class has additional attributes: leadingActor and bluRayOrDVD
 
 #ifndef MOVIE_H
 #define MOVIE_H
 
 #include "Disk.h"
-
-using namespace std;
 
 class Movie : public Disk {
     public:
