@@ -1,4 +1,4 @@
-#include "GameClass.h"
+#include "Game.h"
 
 Game::Game()
 {
@@ -48,7 +48,7 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game>& 
 
         Game game(title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount);
 
-        games.push_back(&game);
+        games.push_back(&games);
 
     }
     
@@ -99,9 +99,9 @@ double Game::getPrice() const {
 double Game::calculatePrice() const {
         if (rating >= 80) {
         return 69.99;
-    } else if (percentageGrade >= 60) {
+    } else if (rating >= 60) {
         return 49.99;
-    } else if (percentageGrade >= 50) {
+    } else if (rating >= 50) {
         return 29.99;
     } else {
         return 19.99;

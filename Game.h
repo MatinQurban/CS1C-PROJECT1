@@ -1,10 +1,9 @@
 // Game class derives from Disk class (pure virtual includes rating and price)
 // Game class has additional attributes: PrimaryConsole, MaxCoop count, isMultiplayer
 
-#ifndef GAMECLASS_H
-#define GAMECLASS_H
-
-#include "DiskClass.h"
+#ifndef GAME_H
+#define GAME_H
+#include "Disk.h"
 
 class Game : public Disk {
     public:
@@ -23,15 +22,13 @@ class Game : public Disk {
 
         void createListOfSellableItems(const string& inputFileName, vector<Game>& games) const;
         void displayListOfSellableItems(const string &outputFileName, vector<Game> &games) const;
-    
-        // pure virtual function
 
         //print
-        void displayInfo() const override;
+        void displayGameInfo() const override;
 
     private:
         double calculatePrice() const;
         string primaryConsole;
         int maxCoopCount;
 };
-#endif // GAMECLASS_H
+#endif // GAME_H

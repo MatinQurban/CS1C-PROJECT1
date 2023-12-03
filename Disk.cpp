@@ -1,4 +1,4 @@
-#include "DiskClass.h"
+#include "Disk.h"
 
 Disk::Disk() 
 {

@@ -1,9 +1,9 @@
 // Movie class extends from disk class
 
-#ifndef MOVIECLASS_H
-#define MOVIECLASS_H
+#ifndef MOVIE_H
+#define MOVIE_H
 
-#include "DiskClass.h"
+#include "Disk.h"
 
 using namespace std;
 
@@ -21,13 +21,14 @@ class Movie : public Disk {
         //setters
         void setLeadingActor(string leadingActor);
         void createListOfSellableItems(const string& inputFileName, vector<Movie*>& movies);
+        void displayListOfSellableItems(const string &outputFileName, vector<Movie*> &movies) const;
 
         //print
-        void displaySpecificInfo() const override;
+        void displayMovieInfo() const override;
 
     private:
         double calculatePrice() const;
         string leadingActor;
         string bluRayOrDVD;
 };
-#endif // MOVIECLASS_H
+#endif // MOVIE_H

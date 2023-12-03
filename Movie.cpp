@@ -1,4 +1,4 @@
-#include "MovieClass.h"
+#include "Movie.h"
 
 Movie::Movie()
 {
@@ -56,13 +56,38 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
         getline(inFile, synopsis);
         inFile.ignore(10000, '\n');
 
-        Movie movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
+        Movie movies(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
 
-        movies.push_back(&movie);
+        movies.push_back(&movies);
 
     }
     
     inFile.close();
+}
+
+void Movie::displayListOfSellableItems(const string &outputFileName, vector<Movie*> &movies) const
+{
+    fstream outFile(outputFileName, ios::out);
+
+    if (!outFile)
+    {
+        cout << "Error opening the output file." << endl;
+        return;
+    }
+
+    for (int i = 0; i < movies.size(); i++)
+    {
+        outFile << "Title: " << title << endl;
+        outFile << "Genre: " << genre << endl;
+        outFile << "Leading Actor: " << leadingActor << endl;
+        outFile << "Disk Type: " << bluRayOrDVD << endl;
+        outFile << "Release Year: " << releaseYear << endl;
+        outFile << "Rating: " << rating << endl;
+        outFile << "Synopsis: " << synopsis << endl;
+        outFile << endl;
+    }
+
+    outFile.close();
 }
 
 double Movie::getPrice() const {
@@ -87,7 +112,7 @@ void Movie::setLeadingActor(string leadingActor)
 }
 
 
-void Movie::displaySpecificInfo() const
+void Movie::displayMovieInfo() const
 {
     cout << this;
     cout << "Title: " << title << endl;

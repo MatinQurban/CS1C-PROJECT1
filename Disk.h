@@ -1,12 +1,13 @@
 //Class to handle the base class of disk
 
-#ifndef DISKCLASS_H
-#define DISKCLASS_H
+#ifndef DISK_H
+#define DISK_H
 
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -51,4 +52,4 @@ class Disk {
 };
 
 
-#endif 
+#endif // DISK_H
