@@ -21,14 +21,15 @@ class Game : public Disk
         void setPrimaryConsole(string primaryConsole);
         void setMaxCoopCount(int maxCoopCount);
 
-        void createListOfSellableItems(const string& inputFileName, vector<Game>& games) const;
-        void displayListOfSellableItems(const string &outputFileName, vector<Game> &games) const;
+        void createListOfSellableItems(const string& inputFileName, vector<Game*>& games) const;
+        void displayListOfSellableItems(const string &outputFileName, vector<Game*> &games) const;
 
         //print
-        void displayGameInfo() const override;
+        void displayInfo() const override;
+
+        double calculatePrice() const;
 
     private:
-        double calculatePrice() const;
         string primaryConsole;
         int maxCoopCount;
 };

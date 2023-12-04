@@ -34,7 +34,7 @@ class Disk
         //print
         friend ostream& operator << (ostream& out, const Disk &rhs);
         void createListOfSellableItems(const string& inputFileName, vector<Disk>& disks);
-        virtual void displaySpecificInfo() const = 0;
+        virtual void displayInfo() const = 0;
 
         //pure virtual function
         virtual double getPrice() const = 0;

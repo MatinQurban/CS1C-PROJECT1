@@ -95,5 +95,10 @@ bool Disk::operator ==(const Disk& rhs) const
 
 bool Disk::operator !=(const Disk& rhs) const 
 {
-  return !(* == rhs);
+  return !(getTitle() == rhs.getTitle() &&
+           getGenre() == rhs.getGenre() &&
+           getSynopsis() == rhs.getSynopsis() &&
+           getReleaseYear() == rhs.getReleaseYear() &&
+           getRating() == rhs.getRating() &&
+           getPrice() == rhs.getPrice());
 }

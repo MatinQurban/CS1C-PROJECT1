@@ -58,8 +58,7 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
 
         Movie movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
 
-        movie.push_back(&movies);
-
+        movies.push_back(&movie);
     }
     
     inFile.close();
@@ -77,13 +76,13 @@ void Movie::displayListOfSellableItems(const string &outputFileName, vector<Movi
 
     for (int i = 0; i < movies.size(); i++)
     {
-        outFile << "Title: " << title << endl;
-        outFile << "Genre: " << genre << endl;
-        outFile << "Leading Actor: " << leadingActor << endl;
-        outFile << "Disk Type: " << bluRayOrDVD << endl;
-        outFile << "Release Year: " << releaseYear << endl;
-        outFile << "Rating: " << rating << endl;
-        outFile << "Synopsis: " << synopsis << endl;
+        outFile << "Title: " << movies[i]->title << endl;
+        outFile << "Genre: " << movies[i]->genre << endl;
+        outFile << "Leading Actor: " << movies[i]->leadingActor << endl;
+        outFile << "Disk Type: " << movies[i]->bluRayOrDVD << endl;
+        outFile << "Release Year: " << movies[i]->releaseYear << endl;
+        outFile << "Rating: " << movies[i]->rating << endl;
+        outFile << "Synopsis: " << movies[i]->synopsis << endl;
         outFile << endl;
     }
 
@@ -92,10 +91,10 @@ void Movie::displayListOfSellableItems(const string &outputFileName, vector<Movi
 
 double Movie::getPrice() const 
 {
-    return calculatePrice();
+    return getPrice();
 }
 
-double Movie::calculatePrice() const 
+double Movie::getPrice() const 
 {
         if (rating >= 4) {
         return 39.99;
@@ -113,7 +112,7 @@ void Movie::setLeadingActor(string leadingActor)
     this->leadingActor = leadingActor;
 }
 
-void Movie::displayMovieInfo() const
+void Movie::displayInfo() const
 {
     cout << this;
     cout << "Title: " << title << endl;

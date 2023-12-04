@@ -17,7 +17,7 @@ Game::Game(string title, string genre, string synopsis, int releaseYear, int rat
     this->maxCoopCount = maxCoopCount;
 }
 
-void Game::createListOfSellableItems(const string& inputFileName, vector<Game>& games) const
+void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>& games) const
 {
     ifstream inFile(inputFileName);
 
@@ -48,13 +48,13 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game>& 
 
         Game game(title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount);
 
-        game.push_back(&games);
+        games.push_back(&game);
     }
     
     inFile.close();
 }
 
-void Game::displayListOfSellableItems(const string &outputFileName, vector<Game> &games) const
+void Game::displayListOfSellableItems(const string &outputFileName, vector<Game*> &games) const
 {
     fstream outFile(outputFileName, ios::out | ios::app);
 
@@ -66,13 +66,13 @@ void Game::displayListOfSellableItems(const string &outputFileName, vector<Game>
 
     for (int i = 0; i < games.size(); i++)
     {
-        outFile << "Title: " << title << endl;
-        outFile << "Genre: " << genre << endl;
-        outFile << "Primary Console: " << primaryConsole << endl;
-        outFile << "Max Coop Count: " << maxCoopCount << endl;
-        outFile << "Release Year: " << releaseYear << endl;
-        outFile << "Rating: " << rating << endl;
-        outFile << "Synopsis: " << synopsis << endl;
+        outFile << "Title: " << games[i]->title << endl;
+        outFile << "Genre: " << games[i]->genre << endl;
+        outFile << "Primary Console: " << games[i]->primaryConsole << endl;
+        outFile << "Max Coop Count: " << games[i]->maxCoopCount << endl;
+        outFile << "Release Year: " << games[i]->releaseYear << endl;
+        outFile << "Rating: " << games[i]->rating << endl;
+        outFile << "Synopsis: " << games[i]->synopsis << endl;
         outFile << endl;
     }
 
@@ -122,4 +122,18 @@ void Game::setPrimaryConsole(string primaryConsole)
 void Game::setMaxCoopCount(int maxCoopCount)
 {
     this->maxCoopCount = maxCoopCount;
+}
+
+void Game::displayInfo() const
+{
+    cout << this;
+    cout << "Title: " << title << endl;
+    cout << "Genre: " << genre << endl;
+    cout << "Primary Console: " << primaryConsole << endl;
+    cout << "Maximum Coop Count: " << maxCoopCount << endl;
+    cout << "Release Year: " << releaseYear << endl;
+    cout << "Rating: " << rating << endl;
+    cout << "Synopsis: " << synopsis << endl;
+    cout << "Price: " << getPrice() << endl;    
+    cout << endl;
 }

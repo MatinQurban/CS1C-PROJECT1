@@ -18,15 +18,15 @@ Register::~Register()
     dumpTransactions();
 }
 
-void Register::newTransaction(const string& diskName, const string& diskType, const double& price, const string& firstName, const string& lastName, const string& phoneNumber)
+void Register::newTransaction(const string& diskName, const string& diskType, const double& price, const Customer& customer)
 {
     Transaction_Info *Transaction_Info;
     Transaction_Info->diskName = diskName;
     Transaction_Info->diskType = diskType;
     Transaction_Info->price = price;
-    Transaction_Info->firstName = firstName;
-    Transaction_Info->lastName = lastName;
-    Transaction_Info->phoneNumber = phoneNumber;
+    Transaction_Info->firstName = customer.getFirstName();
+    Transaction_Info->lastName = customer.getLastName();
+    Transaction_Info->phoneNumber = customer.getPhoneNumber();
 
     allTransactions.push_back(Transaction_Info);
 }
@@ -48,7 +48,7 @@ void Register::populateTransactions()
         return;
     }
     
-    while (getline(previousTransactions, lineTransaction))
+    while (getline(previousTransactions, lineTransaction) && !previousTransactions.eof())
     { 
         lineCount++;
         if(validateTransactionFile(lineTransaction, lineCount))
@@ -148,13 +148,18 @@ void Register::dumpTransactions()
         lineTotal += "//" + to_string(allTransactions[i]->price) + " ";
         lineTotal += "//" + allTransactions[i]->firstName + " ";
         lineTotal += "//" + allTransactions[i]->lastName + " ";
-        lineTotal += "//" + allTransactions[i]->phoneNumber + " ";
-        
+        lineTotal += "//" + allTransactions[i]->phoneNumber + " //";
+
+        transactionFile << lineTotal << endl;
     }
+
     // ======================================================================
 
     //NEED TO REMEMBER TO DELETE EVERYTHING IN THE VECTOR AFTER THIS IS DONE!
 
     // ======================================================================
-    transactionFile.close("Store_Transactions.txt");
+    
+    allTransactions.clear();
+
+    transactionFile.close();
 }

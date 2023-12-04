@@ -2,6 +2,7 @@
 #define REGISTER_H
 
 #include "Disk.h"
+#include "Customer.h"
 
 struct Transaction_Info {
     string diskName;
@@ -12,7 +13,7 @@ struct Transaction_Info {
     string phoneNumber;
 };
 
-class Register : public Transaction_Info
+class Register
 {
     public:
         Register();
@@ -20,7 +21,7 @@ class Register : public Transaction_Info
         ~Register();
         void populateTransactions();
         void dumpTransactions();
-        void newTransaction(const string& diskName, const string& diskType, const double& price, const string& firstName, const string& lastName, const string& phoneNumber);
+        void newTransaction(const string& diskName, const string& diskType, const double& price, const Customer& customer);
         bool validateTransactionFile(string line, int lineCount);
 
     private:

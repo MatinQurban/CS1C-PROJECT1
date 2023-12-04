@@ -23,10 +23,10 @@ class Movie : public Disk {
         void displayListOfSellableItems(const string &outputFileName, vector<Movie*> &movies) const;
 
         //print
-        void displayMovieInfo() const override;
+        void displayInfo() const override;
 
-    private:
         double calculatePrice() const;
+    private:
         string leadingActor;
         string bluRayOrDVD;
 };

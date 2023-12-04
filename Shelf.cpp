@@ -5,7 +5,7 @@ Shelf::Shelf()
     
 }
 
-Shelf::~Shelf() {}
+Shelf::~Shelf() { }
 
 void Shelf::addDisk(Disk *disk)
 {
@@ -89,7 +89,7 @@ void Shelf::outputTransactionHistory(const string& aPhoneNumber)
         {
             cout << "Transaction History: " << endl;
             cout << "Phone Number: " << xPhoneNumber << endl;
-            cout << "Disk Name: " << xdiskName << endl;
+            cout << "Disk Name: " << xdiskName. << endl;
             cout << "Disk Type: " << xdiskType << endl;
             cout << "Price: " << xprice << endl;
             cout << "First Name: " << xfirstName << endl;
@@ -98,3 +98,14 @@ void Shelf::outputTransactionHistory(const string& aPhoneNumber)
     }
 }
 
+Disk* Shelf::getDisk(const string &diskName)
+{
+    for (const auto &disk : allDisks)
+    {
+        if (disk->getTitle() == diskName)
+        {
+            return disk;
+        }
+    }
+    return nullptr;
+}

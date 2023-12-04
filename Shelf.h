@@ -14,6 +14,8 @@ public:
     void registerPreviousTransaction();
     void outputTransactionHistory(const string &aPhoneNumber);
 
+    Disk *getDisk(const string &diskName);
+
 private:
     vector<Disk *> allDisks;
 };
