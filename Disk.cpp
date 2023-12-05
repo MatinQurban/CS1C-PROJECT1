@@ -7,6 +7,7 @@ Disk::Disk()
     synopsis = "";
     releaseYear = 0;
     rating = 0;
+    numStock = 3;
 }
 
 Disk::Disk(string title, string genre, string synopsis, int releaseYear, int rating)

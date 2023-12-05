@@ -51,7 +51,7 @@ class Disk
         string title;
         string genre;
         string synopsis;
-        int numStock=3;
+        int numStock;
         int releaseYear;
         int rating;
 };

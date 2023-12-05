@@ -18,7 +18,7 @@ Game::Game(string title, string genre, string synopsis, int releaseYear, int rat
     this->maxCoopCount = maxCoopCount;
 }
 
-void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>& games, vector<Game*> &availableGames) const
+void Game::createListOfSellableItems(const string& inputFileName, vector<Game *>& games) const //, vector<Game *> &availableGames potentially add this back in as 3rd parameter
 {
     ifstream inFile(inputFileName);
 
@@ -35,6 +35,7 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>&
     int releaseYear;
     int rating;
     string synopsis;
+    int numStock;
 
     while (inFile && !inFile.eof()) 
     {
@@ -46,6 +47,7 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>&
         inFile >> rating;
         inFile.ignore(10000, '\n');
         getline(inFile, synopsis);
+        inFile >> numStock;
         inFile.ignore(10000, '\n');
 
         Game game;
@@ -57,10 +59,19 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>&
         game.setRating(rating);
         game.setPrimaryConsole(primaryConsole);
         game.setMaxCoopCount(maxCoopCount);
+        game.setStock(numStock);
 
         games.push_back(&game);
     }
-    
+    // //If a movie has more than 0 stock, add it to the availableGames vector
+    // for (int i = 0; i < games.size(); i++)
+    // {
+    //     if (games[i]->getStock() > 0)
+    //     {
+    //         availableGames.push_back(games[i]);
+    //     }
+    // }
+
     inFile.close();
 }
 

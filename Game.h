@@ -21,7 +21,7 @@ class Game : public Disk
         void setPrimaryConsole(string primaryConsole);
         void setMaxCoopCount(int maxCoopCount);
 
-        void createListOfSellableItems(const string& inputFileName, vector<Game*>& games, vector<Game*> &availableGames) const;
+        void createListOfSellableItems(const string& inputFileName, vector<Game*>& games) const; //, vector<Game *> &availableGames potentially add this back in as 3rd parameter
         void displayListOfSellableItems(const string &outputFileName, vector<Game*> &games) const;
 
         //print

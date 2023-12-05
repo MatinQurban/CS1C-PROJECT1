@@ -19,7 +19,7 @@ class Movie : public Disk {
 
         //setters
         void setLeadingActor(string leadingActor);
-        void createListOfSellableItems(const string& inputFileName, vector<Movie*>& totalMovies, vector<Movie *> availableMovies);
+        void createListOfSellableItems(const string& inputFileName, vector<Movie*>& totalMovies) const; //, vector<Movie *> &availableMovies potentially add this back in as 3rd parameter
         void displayListOfSellableItems(const string &outputFileName, vector<Movie*> &movies) const;
 
         //print

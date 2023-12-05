@@ -18,13 +18,14 @@ int main()
 
     Movie *movie = new Movie();
     vector<Movie *> movies; // vector for total inventory, regardless of whether it's purchased or not
-    vector<Movie *> availableMovies; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
+    // vector<Movie *> availableMovies; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
+    // realize we might no longer need the 'available' vectors, since we can just check the num stock of a disk during checkStock() function... DUHHHHH lol
 
-    movie->createListOfSellableItems("inputMovies.txt", movies, availableMovies);
+    movie->createListOfSellableItems("inputMovies.txt", movies); // Populates both total inventory ~~~and customer facing inventory~~~ <---scratch for now
 
     Game *game = new Game();
     vector<Game*> games; // Changed vector type to Game
-    vector<Game*> availableGames; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
+    // vector<Game*> availableGames; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
 
     game->createListOfSellableItems("inputGames.txt", games); // Passed vector of Game objects
 
@@ -212,7 +213,14 @@ int main()
                                 
                                 budget = budget - customerGame->getPrice();
                                 //also need to clear game from shelf, will need to remove from availableGames vector instead of total stock vector
-                                availableGames.customerGame->getTitle();
+                                //can use itemPurchased function to decrement stock
+                                for(int i = 0; i < games.size(); i++)
+                                {
+                                    if(games[i] == customerGame)
+                                    {
+                                        games[i]->itemPurchased();
+                                    }
+                                }
 
                                 valid = false;
                                 switchValid = true;
@@ -221,6 +229,9 @@ int main()
                         }
                         } while (validateSelection != 'Y' && validateSelection != 'N');
                     }
+                    // potential stuck point here, if the customer doesn't have enough money, they can't buy the game.
+                    // also if the game is not in stock, they can't buy the game.
+                    // there is no break statement here, so will it loop back to the beginning of the switch statement(?)
                 }
 
                 case 3: 
@@ -290,7 +301,15 @@ int main()
                                 budget = budget - customerMovie->getPrice();
                                 valid = false;
                                 switchValid = true; 
-                                //also need to clear movie from shelf
+                                //also need to clear movie from shelf; will decrement stock by 1
+                                for(int i = 0; i < movies.size(); i++)
+                                {
+                                    if(movies[i] == customerMovie)
+                                    {
+                                        movies[i]->itemPurchased();
+                                    }
+                                }
+                                
                                 break;
                             }
                         }
@@ -368,6 +387,20 @@ int main()
                                         // Add code to handle the exit confirmation
                                         validateSelection = toupper(validateSelection);
 
+                                        if (validateSelection != 'Y' && validateSelection != 'N')
+                                        {
+                                            cout << "\n**** " << validateSelection << " is an invalid entry ****" << endl;
+                                            cout << "**** Please input Y or N  ****" << endl;
+                                            cin.clear();
+                                        }
+                                        else
+                                        {
+                                            if (validateSelection == 'Y')
+                                            {
+                                                input = 0;
+                                                switchValid = true;
+                                            }
+                                        }
                                         
                                         break;
                                     }
