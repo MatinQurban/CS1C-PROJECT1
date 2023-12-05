@@ -1,7 +1,7 @@
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
 #include "Disk.h"
-#include "Transaction.h"
+#include "Register.h"
 
 class Customer 
 {
@@ -22,7 +22,7 @@ class Customer
         void setPhoneNumber(string phoneNumber);
         void setBudget(double budget);
         
-        void addTransaction(const Transaction &item);
+        void addTransaction(const Transaction_Info &item);
 
         // print
         void displayTransactionHistory();
@@ -32,6 +32,6 @@ class Customer
         string lastName;
         string phoneNumber;
         double budget;   
-        vector<Transaction> transactions;
+        vector<Transaction_Info> transactions;
 };
 #endif // CUSTOMER_H

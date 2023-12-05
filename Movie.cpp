@@ -94,7 +94,7 @@ double Movie::getPrice() const
     return getPrice();
 }
 
-double Movie::getPrice() const 
+double Movie::calculatePrice() const 
 {
         if (rating >= 4) {
         return 39.99;

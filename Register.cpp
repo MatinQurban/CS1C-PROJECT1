@@ -18,7 +18,7 @@ Register::~Register()
     dumpTransactions();
 }
 
-void Register::newTransaction(const string& diskName, const string& diskType, const double& price, const Customer& customer)
+void Register::newTransaction(const string& diskName, const string& diskType, const double& price, Customer& customer)
 {
     Transaction_Info *Transaction_Info;
     Transaction_Info->diskName = diskName;
@@ -29,6 +29,21 @@ void Register::newTransaction(const string& diskName, const string& diskType, co
     Transaction_Info->phoneNumber = customer.getPhoneNumber();
 
     allTransactions.push_back(Transaction_Info);
+    customer.addTransaction(*Transaction_Info);
+}
+
+void Register::newTransaction(const Disk* disk, const string& diskType, Customer& customer)
+{
+    Transaction_Info *Transaction_Info;
+    Transaction_Info->diskName = disk->getTitle();
+    Transaction_Info->diskType = diskType;
+    Transaction_Info->price = disk->getPrice();
+    Transaction_Info->firstName = customer.getFirstName();
+    Transaction_Info->lastName = customer.getLastName();
+    Transaction_Info->phoneNumber = customer.getPhoneNumber();
+
+    allTransactions.push_back(Transaction_Info);
+    customer.addTransaction(*Transaction_Info);
 }
 
 // This function will populate the allTransactions vector with the transactions from the transaction file.
@@ -162,4 +177,67 @@ void Register::dumpTransactions()
     allTransactions.clear();
 
     transactionFile.close();
+}
+
+vector<Transaction_Info*> Register::findTransaction(const string& aPhoneNumber, const string& key) //Key: "All", "First", "Last", or name of game/movie
+{
+    vector<Transaction_Info*> foundTransactions;
+    //search through all transactions vector or file and whatever matches with phone number, output it.
+    
+    if (key == "First")
+    {
+        for (int i = 0; i < allTransactions.size(); i++)
+        {
+            if (allTransactions[i]->phoneNumber == aPhoneNumber)
+            {
+                foundTransactions.push_back(allTransactions[i]);
+                return foundTransactions;
+            }
+        }
+    }
+    else if (key == "Last")
+    {
+        for (int i = 1; i <= allTransactions.size(); i++) {
+            if (allTransactions[allTransactions.size() - i]->phoneNumber == aPhoneNumber) {
+                foundTransactions.push_back(allTransactions[allTransactions.size() - i]);
+                return foundTransactions;
+            }
+        }
+    }
+    else if (key == "All")
+    {
+        for (int i = 0; i < allTransactions.size(); i++)
+        {
+            if (allTransactions[i]->phoneNumber == aPhoneNumber)
+            {
+                foundTransactions.push_back(allTransactions[i]);
+            }
+        }
+        return foundTransactions;
+    }
+    else 
+    {
+        for (int i = 0; i < allTransactions.size(); i++)
+        {
+            if (allTransactions[i]->phoneNumber == aPhoneNumber && allTransactions[i]->diskName == key)
+            {
+                foundTransactions.push_back(allTransactions[i]);
+                return foundTransactions;
+            }
+        }
+    }
+    
+    return foundTransactions;
+    
+}
+
+void Register::displayTransaction(Transaction_Info *Transaction)
+{
+    cout << "Disk Name: " << Transaction->getDiskName() << endl;
+    cout << "Disk Type: " << Transaction->getDiskType() << endl;
+    cout << "Price: " << Transaction->getTotal() << endl;
+    cout << "First Name: " << Transaction->getFirstName() << endl;
+    cout << "Last Name: " << Transaction->getLastName() << endl;
+    cout << "Phone Number: " << Transaction->getPhoneNumber() << endl;
+    cout << "Budget: " << Transaction->getBudget() << endl;
 }

@@ -11,15 +11,19 @@ using namespace std;
 
 int main()
 {
+    Register* register1 = new Register();
+    register1->populateTransactions(); // Loads the transaction history from the file
+
+
     Movie *movie = new Movie();
-    vector<Movie *> movies;
-    vector<string> movieTitles;
+    vector<Movie *> movies; // vector for total inventory, regardless of whether it's purchased or not
+    vector<string> movieTitles; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
 
     movie->createListOfSellableItems("inputMovies.txt", movies);
 
     Game *game = new Game();
     vector<Game*> games; // Changed vector type to Game
-    vector<string> gameTitles;
+    vector<string> gameTitles; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
 
     game->createListOfSellableItems("inputGames.txt", games); // Passed vector of Game objects
 
@@ -67,6 +71,9 @@ int main()
     
     bool valid = false;
     int input; // Declare the variable "input"
+    string diskType;
+    string diskName;
+    char validateSelection;
 
     do
     {
@@ -122,7 +129,6 @@ int main()
             {
                 case 1:
                 {
-                    string diskName;
                     cout << "What is the title of the game or movie you are looking for?";
                     getline(cin, diskName);
 
@@ -139,8 +145,8 @@ int main()
 
                 case 2:
                 {
+                    diskType = "Game";
                     switchValid = false;
-                    string diskName;
                     
                     while (!switchValid)
                     {
@@ -161,7 +167,7 @@ int main()
                     //need to add a checkout portion for if the game is in stock (switchValid = true)
                     //need to actually select the game from the shelf lol
                     //need to instantiate a register so customer can buy the game !
-                    char validateSelection;
+
                     if(switchValid)
                     {
                         Disk* customerGame = shelf->getDisk(diskName);
@@ -193,15 +199,19 @@ int main()
                         }
                         else
                         {
-                            if (validateSelection == 'Y' && budget > customerGame->getPrice())
+                            if (validateSelection == 'Y' && budget >= customerGame->getPrice())
                             {
                                 //convert this portion of code to a transaction using transaction class.
-                                // Register* register = new Register();
-                                // register->newTransaction(Ignoctio, customerGame);
+                                //will need to overload new transaction function to take disk
+                                register1->newTransaction(customerGame, diskType, Ignoctio);
                                 
+
+                                cout << "You have bought " << customerGame->getTitle() << endl;
                                 
-                                cout << "You have bought " << game->getTitle() << endl;
                                 budget = budget - customerGame->getPrice();
+                                //also need to clear game from shelf, will need to remove from gameTitles vector instead of total stock vector
+                                gameTitles.(customerGame->getTitle());
+
                                 valid = false;
                                 switchValid = true;
                                 break;
@@ -213,48 +223,51 @@ int main()
 
                 case 3: 
                 {
+                    diskType = "Movie";
                     switchValid = false;
+                    
                     while (!switchValid)
                     {
-                        string diskName;
-                        cout << "Wha'\n' the title of the movie you are looking for?";
-                        getline(1000, diskName);
-                
-                        if (checkStock(diskName)) 
-                        {
-                            cout << '\n' << diskName << " is currently in stock!" << endl;
-                            switchValid = true;
-                        }
-                        else
-                        {
-                            cout << "\n" << diskName << " is not in stock!" << endl;
-                        }
+                    cout << "What is the title of the game you are looking for?";
+                    getline(cin, diskName);
+
+                    if (shelf->checkStock(diskName)) 
+                    {
+                        cout << "\n" << diskName << " is currently in stock!" << endl;
+                        switchValid = true;
                     }
-                
-                    cout << "Movie Information:" << endl; //disk information
-                    cout << "-----------------" << endl;
-                    // "Title: "
-                    // "Genre: "
-                    // "Synopsis: "
-                    // "Release Year: "
-                    // "Rating: "
-                    // "Price: "
-                    // "Leading Actor: "
-                    // "BluRay or DVD?: "
-                    movie->displayInfo();
-                
-                    switchValid = false;
-                
-                    while (!switchValid)
+                    else
                     {
-                        char validateSelection;
-                
-                        cout << "\nAre you sure you want to exit? (Y/N)" ;
+                        cout << "\n" << diskName << " is not in stock!" << endl;
+                    }
+                    }
+
+                    //need to add a checkout portion for if the game is in stock (switchValid = true)
+                    //need to actually select the game from the shelf lol
+                    //need to instantiate a register so customer can buy the game !
+                    if(switchValid)
+                    {
+                        Disk* customerMovie = shelf->getDisk(diskName);
+                        cout << "Movie Information:" << endl; //disk information
+                        cout << "-----------------" << endl;
+                        // "Title: "
+                        // "Genre: "
+                        // "Synopsis: "
+                        // "Release Year: "
+                        // "Rating: "
+                        // "Price: "
+                        // "Leading Actor: "
+                        // "BluRay or DVD?: "
+                        customerMovie->displayInfo();
+
+                        do
+                        {
+                        cout << "Would you like to purchase this movie? (Y/N)";
                         cin.get(validateSelection);
                         cin.ignore(1000, '\n');
                 
                         validateSelection = toupper(validateSelection);
-                
+            
                         if (validateSelection != 'Y' && validateSelection != 'N')
                         {
                             cout << "\n**** " << validateSelection << " is an invalid entry ****" << endl;
@@ -263,27 +276,123 @@ int main()
                         }
                         else
                         {
-                            if (validateSelection == 'Y' && budget > price)
+                            if (validateSelection == 'Y' && budget >= customerMovie->getPrice())
                             {
-                                cout << "You have bought " << diskName << endl;
-                                budget = budget - price;
+                                //convert this portion of code to a transaction using transaction class.
+                                //will need to overload new transaction function to take disk
+                                register1->newTransaction(customerMovie, diskType, Ignoctio);
+                                
+                                
+                                cout << "You have bought " << customerMovie->getTitle() << endl;
+                                
+                                budget = budget - customerMovie->getPrice();
                                 valid = false;
-                                switchValid = true;
+                                switchValid = true; 
+                                //also need to clear movie from shelf
                                 break;
                             }
                         }
-                    
+                        } while (validateSelection != 'Y' && validateSelection != 'N');
                     }
                 }
 
                 case 4:
                 {
                     // Show Transaction History of the Customer
+                    // Would you like to see history of current customer or 
+                    // would you like to look up a customer by phone number?
+                    
+                    cout << "Would you like to" << endl;
+                    cout << "*** 1. Search for a customer" << endl;
+                    cout << "*** 2. View current customer's history" << endl;
+                    cout << "*** 0. Exit" << endl;
+                    cout << "Enter selection: ";
+                    
+                    vector<Transaction_Info*> customerTransactions;
+
+                    do
+                    {
+                        cin.get(validateSelection);
+                        cin.ignore(1000, '\n');
+                
+                        validateSelection = toupper(validateSelection);
+
+                        if (validateSelection != '0' && validateSelection != '1' && validateSelection != '2')
+                        {
+                            cout << "\n**** " << validateSelection << " is an invalid entry ****" << endl;
+                            cout << "**** Please input an integer 0-2 ****" << endl;
+                            cin.clear();
+                        }
+                        else 
+                        {
+                            switch (validateSelection)
+                            {
+                                case '1':
+                                {
+                                    // Search for a customer
+                                    cout << "Enter the phone number of the customer you would like to search for: ";
+                                    cin >> phoneNumber;
+                                    cin.ignore(1000, '\n');
+
+                                    // Search for the customer in the transaction history
+                                    customerTransactions = register1->findTransaction(phoneNumber, "All");
+
+                                    if (customerTransactions.size() == 0)
+                                    {
+                                        cout << "No transactions found for Customer." << endl;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        // loop through customerTransactions<> vector and display each transaction. should be a function for that
+                                        
+                                        
+                                        cout << "Transaction History: " << endl;
+                                        cout << "---------------------" << endl;
+                                        cout << "Customer Name: " << customerTransactions->firstName << " " << customerTransactions->lastName << endl;
+                                        cout << "Phone Number: " << customerTransactions->phoneNumber << endl;
+                                        cout << "Budget: " << customerTransactions->budget << endl;
+
+                                        cout << "";
+                                        break;
+                                    }
+                                }
+
+                                case '2':
+                                {
+                                    // View current customer's history
+                                    cout << "Transaction History: " << endl;
+                                    cout << "---------------------" << endl;
+                                    cout << "Customer Name: " << firstName << " " << lastName << endl;
+                                    cout << "Phone Number: " << phoneNumber << endl;
+                                    cout << "Budget: " << budget << endl;
+
+                                    cout << "";
+                                    break;
+                                }
+
+                                case '0':
+                                {
+                                    while (!switchValid)
+                                    {
+                                        cout << "\nAre you sure you want to exit? (Y/N)";
+                                        cin.get(validateSelection);
+                                        // Add code to handle the exit confirmation
+                                        validateSelection = toupper(validateSelection);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    } while (validateSelection != '0' && validateSelection != '1' && validateSelection != '2');
+
                     cout << "Transaction History: " << endl;
                     cout << "---------------------" << endl;
                     cout << "Customer Name: " << firstName << " " << lastName << endl;
                     cout << "Phone Number: " << phoneNumber << endl;
                     cout << "Budget: " << budget << endl;
+
+                    cout << "";
                     break;
                 }
 
@@ -291,7 +400,6 @@ int main()
                 {
                     while (!switchValid)
                     {
-                        char validateSelection;
                         cout << "\nAre you sure you want to exit? (Y/N)";
                         cin.get(validateSelection);
                         // Add code to handle the exit confirmation

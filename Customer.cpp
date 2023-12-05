@@ -4,8 +4,8 @@ Customer::Customer()
 {
     firstName = "";
     lastName = "";
-    phoneNumber = "";
     budget = 0.0;
+    phoneNumber = "";
 }
 
 Customer::Customer(string firstName, string lastName, string phoneNumber, double budget)
@@ -71,7 +71,7 @@ void Customer::displayTransactionHistory()
     }
 }
 
-void Customer::addTransaction(const Transaction &item)
+void Customer::addTransaction(const Transaction_Info &item)
 {
     transactions.push_back(item);
 }
