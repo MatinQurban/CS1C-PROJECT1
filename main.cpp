@@ -13,17 +13,18 @@ int main()
 {
     Register* register1 = new Register();
     register1->populateTransactions(); // Loads the transaction history from the file
+    register1->populateCustomers(); // Loads the customer information from the file
 
 
     Movie *movie = new Movie();
     vector<Movie *> movies; // vector for total inventory, regardless of whether it's purchased or not
-    vector<string> movieTitles; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
+    vector<Movie *> availableMovies; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
 
-    movie->createListOfSellableItems("inputMovies.txt", movies);
+    movie->createListOfSellableItems("inputMovies.txt", movies, availableMovies);
 
     Game *game = new Game();
     vector<Game*> games; // Changed vector type to Game
-    vector<string> gameTitles; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
+    vector<Game*> availableGames; // vector for customer facing inventory, still need to populate/implement. Will be changed based on what has been purchased.
 
     game->createListOfSellableItems("inputGames.txt", games); // Passed vector of Game objects
 
@@ -68,6 +69,7 @@ int main()
     cin >> budget;
 
     Customer Ignoctio = Customer(firstName, lastName, phoneNumber, budget);
+    register1->addCustomer(Ignoctio);
     
     bool valid = false;
     int input; // Declare the variable "input"
@@ -209,8 +211,8 @@ int main()
                                 cout << "You have bought " << customerGame->getTitle() << endl;
                                 
                                 budget = budget - customerGame->getPrice();
-                                //also need to clear game from shelf, will need to remove from gameTitles vector instead of total stock vector
-                                gameTitles.(customerGame->getTitle());
+                                //also need to clear game from shelf, will need to remove from availableGames vector instead of total stock vector
+                                availableGames.customerGame->getTitle();
 
                                 valid = false;
                                 switchValid = true;
@@ -337,37 +339,23 @@ int main()
                                     // Search for the customer in the transaction history
                                     customerTransactions = register1->findTransaction(phoneNumber, "All");
 
-                                    if (customerTransactions.size() == 0)
-                                    {
-                                        cout << "No transactions found for Customer." << endl;
-                                        break;
-                                    }
-                                    else
-                                    {
-                                        // loop through customerTransactions<> vector and display each transaction. should be a function for that
-                                        
-                                        
-                                        cout << "Transaction History: " << endl;
-                                        cout << "---------------------" << endl;
-                                        cout << "Customer Name: " << customerTransactions->firstName << " " << customerTransactions->lastName << endl;
-                                        cout << "Phone Number: " << customerTransactions->phoneNumber << endl;
-                                        cout << "Budget: " << customerTransactions->budget << endl;
+                                    register1->displayTransactionsforCustomer(customerTransactions);
 
-                                        cout << "";
-                                        break;
-                                    }
+                                    break;
                                 }
 
                                 case '2':
                                 {
-                                    // View current customer's history
-                                    cout << "Transaction History: " << endl;
-                                    cout << "---------------------" << endl;
-                                    cout << "Customer Name: " << firstName << " " << lastName << endl;
-                                    cout << "Phone Number: " << phoneNumber << endl;
-                                    cout << "Budget: " << budget << endl;
+                                    // View current customer's history by phone number
+                                    // Simply display all the transactions that have the same phone number as the current customer
+                                    
 
-                                    cout << "";
+                                    // Search for the customer in the transaction history
+                                    customerTransactions = register1->findTransaction(phoneNumber, "All");
+                                    
+                                   
+                                    register1->displayTransactionsforCustomer(customerTransactions);
+
                                     break;
                                 }
 
@@ -379,6 +367,8 @@ int main()
                                         cin.get(validateSelection);
                                         // Add code to handle the exit confirmation
                                         validateSelection = toupper(validateSelection);
+
+                                        
                                         break;
                                     }
                                 }
@@ -404,6 +394,21 @@ int main()
                         cin.get(validateSelection);
                         // Add code to handle the exit confirmation
                         validateSelection = toupper(validateSelection);
+
+                        if (validateSelection != 'Y' && validateSelection != 'N')
+                        {
+                            cout << "\n**** " << validateSelection << " is an invalid entry ****" << endl;
+                            cout << "**** Please input Y or N    ****" << endl;
+                            cin.clear();
+                        }
+                        else
+                        {
+                            if (validateSelection == 'Y')
+                            {
+                                input = 0;
+                                switchValid = true;
+                            }
+                        }
                         break;
                     }
                 }
@@ -417,6 +422,7 @@ int main()
         }
     } while (input != 0);
     
+
     // default:
     // {
     //     cout << "\n**** Please input a number between 0 and 4 ****" << endl;

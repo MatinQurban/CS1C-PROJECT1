@@ -23,6 +23,7 @@ class Disk
         string getSynopsis() const;
         int getReleaseYear() const;
         int getRating() const;
+        int getStock() const;
 
         //setters
         void setTitle(string title);
@@ -30,14 +31,19 @@ class Disk
         void setSynopsis(string synopsis);
         void setReleaseYear(int releaseYear);
         void setRating(int rating);
+        void setStock(int stock);
+    
+        void itemPurchased(); //decrement stock by 1
     
         //print
         friend ostream& operator << (ostream& out, const Disk &rhs);
         void createListOfSellableItems(const string& inputFileName, vector<Disk>& disks);
-        virtual void displayInfo() const = 0;
+        virtual void displayInfo() const=0;
 
         //pure virtual function
-        virtual double getPrice() const = 0;
+        virtual double getPrice() const=0;
+        
+        // operator overloading
         bool operator == (const Disk& rhs) const;
         bool operator != (const Disk& rhs) const;
         
@@ -45,6 +51,7 @@ class Disk
         string title;
         string genre;
         string synopsis;
+        int numStock=3;
         int releaseYear;
         int rating;
 };

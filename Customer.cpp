@@ -62,12 +62,7 @@ void Customer::displayTransactionHistory()
 {
     for (int i = 0; i < transactions.size(); i++)
     {
-        cout << "Transaction " << i + 1 << endl;
-        //cout << "Order ID: " << transactions[i].getDate() << endl;
-        cout << "Disk Name: " << transactions[i].getDiskName() << endl;
-        cout << "Disk Type: " << transactions[i].getDiskType() << endl;
-        cout << "Total: " << transactions[i].getTotal() << endl;
-        cout << endl;
+        displayTransaction(&transactions[i]);
     }
 }
 

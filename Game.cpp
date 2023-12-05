@@ -4,6 +4,7 @@ Game::Game()
 {
     primaryConsole = "";
     maxCoopCount = 0;
+    numStock = 3;
 }
 
 Game::Game(string title, string genre, string synopsis, int releaseYear, int rating, string primaryConsole, int maxCoopCount)
@@ -17,11 +18,12 @@ Game::Game(string title, string genre, string synopsis, int releaseYear, int rat
     this->maxCoopCount = maxCoopCount;
 }
 
-void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>& games) const
+void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>& games, vector<Game*> &availableGames) const
 {
     ifstream inFile(inputFileName);
 
-    if (!inFile) {
+    if (!inFile) 
+    {
         cout << "Error opening the input file." << endl;
         return;
     }
@@ -46,7 +48,15 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game*>&
         getline(inFile, synopsis);
         inFile.ignore(10000, '\n');
 
-        Game game(title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount);
+        Game game;
+        //title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount
+        game.setTitle(title);
+        game.setGenre(genre);
+        game.setSynopsis(synopsis);
+        game.setReleaseYear(releaseYear);
+        game.setRating(rating);
+        game.setPrimaryConsole(primaryConsole);
+        game.setMaxCoopCount(maxCoopCount);
 
         games.push_back(&game);
     }
@@ -73,6 +83,7 @@ void Game::displayListOfSellableItems(const string &outputFileName, vector<Game*
         outFile << "Release Year: " << games[i]->releaseYear << endl;
         outFile << "Rating: " << games[i]->rating << endl;
         outFile << "Synopsis: " << games[i]->synopsis << endl;
+        outFile << "Stock: " << games[i]->numStock << endl;
         outFile << endl;
     }
 
@@ -91,7 +102,8 @@ int Game::getMaxCoopCount() const
     return maxCoopCount;
 }
 
-double Game::getPrice() const {
+double Game::getPrice() const 
+{
     return calculatePrice();
 }
 

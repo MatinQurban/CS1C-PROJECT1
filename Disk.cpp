@@ -46,6 +46,11 @@ int Disk::getRating() const
     return rating;
 }
 
+int Disk::getStock() const
+{
+    return numStock;
+}
+
 void Disk::setTitle(string title)
 {
     this->title = title;
@@ -69,6 +74,16 @@ void Disk::setReleaseYear(int releaseYear)
 void Disk::setRating(int rating)
 {
     this->rating = rating;
+}
+
+void Disk::setStock(int stock)
+{
+    this->numStock = stock;
+}
+
+void Disk::itemPurchased()
+{
+    numStock--;
 }
 
 ostream& operator <<(ostream& out, const Disk &rhs)

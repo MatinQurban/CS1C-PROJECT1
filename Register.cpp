@@ -46,6 +46,43 @@ void Register::newTransaction(const Disk* disk, const string& diskType, Customer
     customer.addTransaction(*Transaction_Info);
 }
 
+void displayTransactionsforCustomer(vector<Transaction_Info*> customerTransactions)
+{
+    if (customerTransactions.size() == 0)
+    {
+        cout << "No transactions found for Customer." << endl;
+        return;
+    }
+    else
+    {
+        int count = 0;
+        // loop through customerTransactions<> vector and display each transaction. should be a function for that
+        for(int i = 0; i < customerTransactions.size(); i++)
+        {
+            cout << "****** Transaction " << i+1 << " ******" << endl;
+            displayTransaction(customerTransactions[i]);
+            cout << endl;
+            count++;
+        }
+        cout << "Total Transactions Found: " << count << endl;
+    
+        return;
+    }
+}
+
+void Register::addCustomer(Customer& customer)
+{
+    //This function will add a customer to the allCustomers vector, but only if the customers phone number does not already exist in the vector.
+    for (int i = 0; i < allCustomers.size(); i++)
+    {
+        if (allCustomers[i].getPhoneNumber() == customer.getPhoneNumber())
+        {
+            cout << "Customer already exists in the system." << endl;
+            return;
+        }
+    }
+    allCustomers.push_back(customer);
+}
 // This function will populate the allTransactions vector with the transactions from the transaction file.
 void Register::populateTransactions()
 {
@@ -56,7 +93,7 @@ void Register::populateTransactions()
     int lineCount = 0;
 
     getline(previousTransactions, lineTransaction);
-    if (!validateTransactionFile(lineTransaction, lineCount))
+    if (!validateFile(lineTransaction, lineCount, "transactions"))
     {
         cout << "The transaction file is not in the correct format. Please check the file and try again." << endl;
         previousTransactions.close();
@@ -66,24 +103,60 @@ void Register::populateTransactions()
     while (getline(previousTransactions, lineTransaction) && !previousTransactions.eof())
     { 
         lineCount++;
-        if(validateTransactionFile(lineTransaction, lineCount))
+        if(validateFile(lineTransaction, lineCount, "transactions"))
         {
-            Transaction_Info formattedTransaction = parseLine(lineTransaction);
+            Transaction_Info formattedTransaction = parseTransaction(lineTransaction);
             Transaction_Info *Transaction_Info = &formattedTransaction;
 
             allTransactions.push_back(Transaction_Info);
         }
-        else
-        {
-            cout << "Information transfer complete. Closing file." << endl;
-            previousTransactions.close();
-            break;
-        }
     }
+    
+    cout << "Information transfer completed " << lineCount << " lines. Closing file." << endl;
+    previousTransactions.close();
+
+
     return;
 }
 
-Transaction_Info parseLine(string transaction)
+
+void Register::populateCustomers()
+{
+    ifstream customerList;
+    customerList.open("Customer_List.txt");
+
+    string lineCustomer;
+    int lineCount = 0;
+
+    getline(customerList, lineCustomer);
+    if (!validateFile(lineCustomer, lineCount, "customers"))
+    {
+        cout << "The transaction file is not in the correct format. Please check the file and try again." << endl;
+        customerList.close();
+        return;
+    }
+    
+    while (getline(customerList, lineCustomer) && !customerList.eof())
+    { 
+        lineCount++;
+        if(validateFile(lineCustomer, lineCount, "customers"))
+        {
+            Customer formattedCustomer = parseCustomer(lineCustomer);
+
+            allCustomers.push_back(formattedCustomer);
+        }
+
+        
+    }
+
+    cout << "Information transfer completed " << lineCount << " lines. Closing file." << endl;
+    customerList.close();
+
+
+    return;
+}
+
+Transaction_Info parseTransaction(string transaction)
 {
     //string transaction will look like this: //DiskName //DiskType //Total //FirstName //LastName //Phone //
     /*
@@ -92,7 +165,7 @@ Transaction_Info parseLine(string transaction)
     Total: double
     FirstName: string
     LastName: string
-    Phone: long
+    Phone: string
     */
     Transaction_Info transactionData;
     
@@ -116,33 +189,67 @@ Transaction_Info parseLine(string transaction)
     return transactionData;
 }
 
-// This function will be used to check if we are opening the right file in the correct format.
-bool Register::validateTransactionFile(string line, int lineCount)
+Customer parseCustomer(string lineCustomerInfo)
 {
+    //string customer will look like this: //FirstName //LastName //Phone //
+    /*
+    FirstName: string
+    LastName: string
+    Phone: string
+    */
+    Customer customerData;
+    string customerInfo = lineCustomerInfo;
+
+    customerInfo = customerInfo.substr(2, customerInfo.find(" ") - 3); // FirstName
+    customerData.setFirstName(customerInfo);
+    
+    customerInfo = lineCustomerInfo.substr(lineCustomerInfo.find(" ") + 1); //LastName //Phone //
+    //                       customerInfo.substr(2, customerInfo.find(" ") - 3) ==> LastName
+    customerData.setLastName(customerInfo.substr(2, customerInfo.find(" ") - 3));
+
+    customerInfo = customerInfo.substr(customerInfo.find(" ") + 1); //Phone //
+    customerData.setPhoneNumber(customerInfo.substr(2, customerInfo.find("//") - 4));
+
+    return customerData;
+}
+
+// This function will be used to check if we are opening the right file in the correct format.
+bool Register::validateFile(string line, int lineCount, string file)
+{
+    /*
+    file: "transactions" or "customers"
+    */
     string tempLine = line;
     if (lineCount == 0)
     {
-        return line == "//DiskName //DiskType //Total //FirstName //LastName //Phone //";
+        return line == "//DiskName //DiskType //Total //FirstName //LastName //Phone //" 
+            || line == "//FirstName //LastName //Phone //";
     }
 
     //For the rest of the validation process, we will skip checking for strings, due to their nature of being able to contain any character.
-
-    tempLine = line.substr(line.find(" ") + 1); //DiskType //Total //FirstName //LastName //Phone //
-    tempLine = line.substr(line.find(" ") + 1); //Total //FirstName //LastName //Phone //
-
-    try 
+    if(file == "transactions")
     {
-        stod(tempLine.substr(2, tempLine.find(" ") - 3));
-    } catch (const std::out_of_range&) {
-        cout << "Argument is out of range for a double" << endl;
+        tempLine = line.substr(line.find(" ") + 1); //DiskType //Total //FirstName //LastName //Phone //
+        tempLine = line.substr(line.find(" ") + 1); //Total //FirstName //LastName //Phone //
+
+        try 
+        {
+            stod(tempLine.substr(2, tempLine.find(" ") - 3));
+        } catch (const std::out_of_range&) {
+            cout << "Argument is out of range for a double" << endl;
+            return false;
+        }
+        catch (const std::invalid_argument&) {
+            cout << "Total is not in the right format!\n" << "Line: " << lineCount << endl;
+            return false;
+        }
+        return true;
+    }
+    else
+    {
+        cout << "File is not in the correct format. Please check the file and try again." << endl;
         return false;
     }
-    catch (const std::invalid_argument&) {
-        cout << "Total is not in the right format!\n" << "Line: " << lineCount << endl;
-        return false;
-    }
-    
-    return true;
 }
 
 // This function will append every transaction inside allTransactions into the transaction file, and then clear the vector.
@@ -231,13 +338,15 @@ vector<Transaction_Info*> Register::findTransaction(const string& aPhoneNumber, 
     
 }
 
-void Register::displayTransaction(Transaction_Info *Transaction)
+void displayTransaction(Transaction_Info *Transaction)
 {
-    cout << "Disk Name: " << Transaction->getDiskName() << endl;
-    cout << "Disk Type: " << Transaction->getDiskType() << endl;
-    cout << "Price: " << Transaction->getTotal() << endl;
-    cout << "First Name: " << Transaction->getFirstName() << endl;
-    cout << "Last Name: " << Transaction->getLastName() << endl;
-    cout << "Phone Number: " << Transaction->getPhoneNumber() << endl;
-    cout << "Budget: " << Transaction->getBudget() << endl;
+    cout << "****** Transaction ******" << endl;
+    cout << "Disk Name: " << Transaction->diskName << endl;
+    cout << "Disk Type: " << Transaction->diskType << endl;
+    cout << "Price: " << Transaction->price << endl;
+    cout << "First Name: " << Transaction->firstName << endl;
+    cout << "Last Name: " << Transaction->lastName << endl;
+    cout << "Phone Number: " << Transaction->phoneNumber << endl;
+    cout << "Budget: " << Transaction->budget << endl;
+    cout << "*************************\n" << endl;
 }

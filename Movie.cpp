@@ -28,7 +28,7 @@ string Movie::getBluRayOrDVD() const
     return bluRayOrDVD;
 }
 
-void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*>& movies)
+void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*>& totalMovies, vector<Movie *> availableMovies)
 {
     ifstream inFile(inputFileName);
 
@@ -58,7 +58,15 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
 
         Movie movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
 
-        movies.push_back(&movie);
+        totalMovies.push_back(&movie);
+    }
+    //If a movie has more than 0 stock, add it to the availableMovies vector
+    for (int i = 0; i < totalMovies.size(); i++)
+    {
+        if (totalMovies[i]->getStock() > 0)
+        {
+            availableMovies.push_back(totalMovies[i]);
+        }
     }
     
     inFile.close();

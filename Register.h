@@ -15,7 +15,7 @@ struct Transaction_Info
     string phoneNumber;
     int budget;
 };
-
+ void displayTransaction(Transaction_Info *Transaction);
 class Register
 {
     public:
@@ -25,15 +25,18 @@ class Register
         vector<Transaction_Info*> findTransaction(const string& aPhoneNumber, const string& key);
         void outputTransactionHistory(const string &aPhoneNumber);
         void populateTransactions();
+        void populateCustomers();
         void dumpTransactions();
         void newTransaction(const string& diskName, const string& diskType, const double& price, Customer& customer);
         void newTransaction(const Disk* disk, const string& diskType, Customer& customer);
+        void displayTransactionsforCustomer(vector<Transaction_Info*> customerTransactions);
+        void addCustomer(Customer& customer);
         //overload newTransaction to take in a Transaction_Info struct, or to take in a disk object
-        bool validateTransactionFile(string line, int lineCount);
+        bool validateFile(string line, int lineCount, string file);
 
-        void displayTransaction(Transaction_Info *Transaction);
 
     private:
         static vector<Transaction_Info *> allTransactions;
+        vector<Customer> allCustomers;  
 };
 #endif // REGISTER_H
