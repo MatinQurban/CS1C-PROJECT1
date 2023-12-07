@@ -1,7 +1,7 @@
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
-#include "Disk.h"
-#include "Register.h"
+
+#include "TransactionInfo.h"
 
 class Customer 
 {

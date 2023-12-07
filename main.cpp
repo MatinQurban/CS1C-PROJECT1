@@ -1,12 +1,10 @@
 #include <iostream>
 #include <string>
-#include "Shelf.h"
-#include "Disk.h"
+
+#include "Shelf.h" // Also includes Disk.h, Register.h, TransactionInfo.h, Customer.h
 #include "Movie.h"
 #include "Game.h"
-#include "Customer.h"
-#include "Transaction.h"
-#include "Register.h"
+
 using namespace std;
 
 int main()

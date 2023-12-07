@@ -1,21 +1,88 @@
 #include "Register.h"
 
+
+Transaction_Info parseTransaction(string transaction, int x)
+{
+    //string transaction will look like this: //DiskName //DiskType //Total //FirstName //LastName //Phone //
+    /*
+    DiskName: string
+    DiskType: string
+    Total: double
+    FirstName: string
+    LastName: string
+    Phone: string
+    */
+    Transaction_Info transactionData;
+    
+    transactionData.diskName = transaction.substr(2, transaction.find(" ") - 3);
+    
+    transaction = transaction.substr(transaction.find(" ") + 1); //DiskType //Total //FirstName //LastName //Phone //
+    transactionData.diskType = transaction.substr(2, transaction.find(" ") - 3);
+
+    transaction = transaction.substr(transaction.find(" ") + 1); //Total //FirstName //LastName //Phone //
+    transactionData.price = stod(transaction.substr(2, transaction.find(" ") - 3));
+
+    transaction = transaction.substr(transaction.find(" ") + 1); //FirstName //LastName //Phone //
+    transactionData.firstName = transaction.substr(2, transaction.find(" ") - 3);
+
+    transaction = transaction.substr(transaction.find(" ") + 1); //LastName //Phone //
+    transactionData.lastName = transaction.substr(2, transaction.find(" ") - 3);
+
+    transaction = transaction.substr(transaction.find(" ") + 1); //Phone //
+    transactionData.phoneNumber = transaction.substr(2, transaction.find(" ") - 3);
+
+    return transactionData;
+}
+
+Customer parseCustomer(string lineCustomerInfo)
+{
+    //string customer will look like this: //FirstName //LastName //Phone //
+    /*
+    FirstName: string
+    LastName: string
+    Phone: string
+    */
+    Customer customerData;
+    string customerInfo = lineCustomerInfo;
+
+    customerInfo = customerInfo.substr(2, customerInfo.find(" ") - 3); // FirstName
+    customerData.setFirstName(customerInfo);
+    
+    customerInfo = lineCustomerInfo.substr(lineCustomerInfo.find(" ") + 1); //LastName //Phone //
+    //                       customerInfo.substr(2, customerInfo.find(" ") - 3) ==> LastName
+    customerData.setLastName(customerInfo.substr(2, customerInfo.find(" ") - 3));
+
+    customerInfo = customerInfo.substr(customerInfo.find(" ") + 1); //Phone //
+    customerData.setPhoneNumber(customerInfo.substr(2, customerInfo.find("//") - 4));
+
+    return customerData;
+}
+
 Register::Register() 
 { 
     populateTransactions();
+    populateCustomers();
+    
 }
 
-Register::Register(vector<Transaction_Info *> Transactions)
+Register::Register(vector<Transaction_Info *> Transactions, vector<Customer> Customers)
 {
+    populateTransactions();
+    populateCustomers();
     for(int i = 0; i < Transactions.size(); i++)
     {
         allTransactions.push_back(Transactions[i]);
+    }
+    for(int i = 0; i < Customers.size(); i++)
+    {
+        allCustomers.push_back(Customers[i]);
     }
 }
 
 Register::~Register() 
 { 
     dumpTransactions();
+    // also need to delete all the pointers in the vector. Now what vector? you may ask, figure it out cuz idk rn either.
 }
 
 void Register::newTransaction(const string& diskName, const string& diskType, const double& price, Customer& customer)
@@ -28,8 +95,11 @@ void Register::newTransaction(const string& diskName, const string& diskType, co
     Transaction_Info->lastName = customer.getLastName();
     Transaction_Info->phoneNumber = customer.getPhoneNumber();
 
+    populateTransactions();
+    populateCustomers();
     allTransactions.push_back(Transaction_Info);
     customer.addTransaction(*Transaction_Info);
+    dumpTransactions();
 }
 
 void Register::newTransaction(const Disk* disk, const string& diskType, Customer& customer)
@@ -42,11 +112,14 @@ void Register::newTransaction(const Disk* disk, const string& diskType, Customer
     Transaction_Info->lastName = customer.getLastName();
     Transaction_Info->phoneNumber = customer.getPhoneNumber();
 
+    populateTransactions();
+    populateCustomers();
     allTransactions.push_back(Transaction_Info);
     customer.addTransaction(*Transaction_Info);
+    dumpTransactions();
 }
 
-void displayTransactionsforCustomer(vector<Transaction_Info*> customerTransactions)
+void Register::displayTransactionsforCustomer(vector<Transaction_Info*> customerTransactions)
 {
     if (customerTransactions.size() == 0)
     {
@@ -105,7 +178,7 @@ void Register::populateTransactions()
         lineCount++;
         if(validateFile(lineTransaction, lineCount, "transactions"))
         {
-            Transaction_Info formattedTransaction = parseTransaction(lineTransaction);
+            Transaction_Info formattedTransaction = parseTransaction(lineTransaction, 1);
             Transaction_Info *Transaction_Info = &formattedTransaction;
 
             allTransactions.push_back(Transaction_Info);
@@ -156,62 +229,6 @@ void Register::populateCustomers()
     return;
 }
 
-Transaction_Info parseTransaction(string transaction)
-{
-    //string transaction will look like this: //DiskName //DiskType //Total //FirstName //LastName //Phone //
-    /*
-    DiskName: string
-    DiskType: string
-    Total: double
-    FirstName: string
-    LastName: string
-    Phone: string
-    */
-    Transaction_Info transactionData;
-    
-    transactionData.diskName = transaction.substr(2, transaction.find(" ") - 3);
-    
-    transaction = transaction.substr(transaction.find(" ") + 1); //DiskType //Total //FirstName //LastName //Phone //
-    transactionData.diskType = transaction.substr(2, transaction.find(" ") - 3);
-
-    transaction = transaction.substr(transaction.find(" ") + 1); //Total //FirstName //LastName //Phone //
-    transactionData.price = stod(transaction.substr(2, transaction.find(" ") - 3));
-
-    transaction = transaction.substr(transaction.find(" ") + 1); //FirstName //LastName //Phone //
-    transactionData.firstName = transaction.substr(2, transaction.find(" ") - 3);
-
-    transaction = transaction.substr(transaction.find(" ") + 1); //LastName //Phone //
-    transactionData.lastName = transaction.substr(2, transaction.find(" ") - 3);
-
-    transaction = transaction.substr(transaction.find(" ") + 1); //Phone //
-    transactionData.phoneNumber = transaction.substr(2, transaction.find(" ") - 3);
-
-    return transactionData;
-}
-
-Customer parseCustomer(string lineCustomerInfo)
-{
-    //string customer will look like this: //FirstName //LastName //Phone //
-    /*
-    FirstName: string
-    LastName: string
-    Phone: string
-    */
-    Customer customerData;
-    string customerInfo = lineCustomerInfo;
-
-    customerInfo = customerInfo.substr(2, customerInfo.find(" ") - 3); // FirstName
-    customerData.setFirstName(customerInfo);
-    
-    customerInfo = lineCustomerInfo.substr(lineCustomerInfo.find(" ") + 1); //LastName //Phone //
-    //                       customerInfo.substr(2, customerInfo.find(" ") - 3) ==> LastName
-    customerData.setLastName(customerInfo.substr(2, customerInfo.find(" ") - 3));
-
-    customerInfo = customerInfo.substr(customerInfo.find(" ") + 1); //Phone //
-    customerData.setPhoneNumber(customerInfo.substr(2, customerInfo.find("//") - 4));
-
-    return customerData;
-}
 
 // This function will be used to check if we are opening the right file in the correct format.
 bool Register::validateFile(string line, int lineCount, string file)
@@ -275,11 +292,7 @@ void Register::dumpTransactions()
         transactionFile << lineTotal << endl;
     }
 
-    // ======================================================================
 
-    //NEED TO REMEMBER TO DELETE EVERYTHING IN THE VECTOR AFTER THIS IS DONE!
-
-    // ======================================================================
     
     allTransactions.clear();
 
@@ -338,15 +351,3 @@ vector<Transaction_Info*> Register::findTransaction(const string& aPhoneNumber, 
     
 }
 
-void displayTransaction(Transaction_Info *Transaction)
-{
-    cout << "****** Transaction ******" << endl;
-    cout << "Disk Name: " << Transaction->diskName << endl;
-    cout << "Disk Type: " << Transaction->diskType << endl;
-    cout << "Price: " << Transaction->price << endl;
-    cout << "First Name: " << Transaction->firstName << endl;
-    cout << "Last Name: " << Transaction->lastName << endl;
-    cout << "Phone Number: " << Transaction->phoneNumber << endl;
-    cout << "Budget: " << Transaction->budget << endl;
-    cout << "*************************\n" << endl;
-}
