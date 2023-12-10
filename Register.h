@@ -25,7 +25,7 @@ class Register
         bool validateFile(string line, int lineCount, string file);
 
         vector<Customer *> allCustomers;  
-    private:
         vector<Transaction_Info *> allTransactions;
+    private:
 };
 #endif // REGISTER_H

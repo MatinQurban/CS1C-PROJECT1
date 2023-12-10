@@ -8,7 +8,8 @@ int main()
     Register* register1 = new Register();
     register1->populateTransactions(); // Loads the transaction history from the file
     register1->populateCustomers(); // Loads the customer information from the file
-    register1->allCustomers[1]->displayCustomerInfo(); // Testing to see if we read from files correctly
+    // displayTransaction(register1->allTransactions[1]); // Testing to see if we read from files correctly
+    // register1->allCustomers[1]->displayCustomerInfo(); // Testing to see if we read from files correctly
 
     Movie *movie = new Movie();
     vector<Movie*> movies; // vector for total inventory, regardless of whether it's purchased or not

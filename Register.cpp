@@ -1,7 +1,7 @@
 #include "Register.h"
 
 
-Transaction_Info parseTransaction(string transaction, int x)
+Transaction_Info* parseTransaction(string transaction, int x)
 {
     //string transaction will look like this: //DiskName //DiskType //Total //FirstName //LastName //Phone //
     /*
@@ -12,24 +12,25 @@ Transaction_Info parseTransaction(string transaction, int x)
     LastName: string
     Phone: string
     */
-    Transaction_Info transactionData;
     
-    transactionData.diskName = transaction.substr(2, transaction.find(" //") - 2);
+    Transaction_Info *transactionData = new struct Transaction_Info;
+    
+    transactionData->diskName = transaction.substr(2, transaction.find(" //") - 2);
     
     transaction = transaction.substr(transaction.find(" //") + 1); //DiskType //Total //FirstName //LastName //Phone //
-    transactionData.diskType = transaction.substr(2, transaction.find(" //") - 2);
+    transactionData->diskType = transaction.substr(2, transaction.find(" //") - 2);
 
     transaction = transaction.substr(transaction.find(" //") + 1); //Total //FirstName //LastName //Phone //
-    transactionData.price = stod(transaction.substr(2, transaction.find(" //") - 2));
+    transactionData->price = stod(transaction.substr(2, transaction.find(" //") - 2));
 
     transaction = transaction.substr(transaction.find(" //") + 1); //FirstName //LastName //Phone //
-    transactionData.firstName = transaction.substr(2, transaction.find(" //") - 2);
+    transactionData->firstName = transaction.substr(2, transaction.find(" //") - 2);
 
     transaction = transaction.substr(transaction.find(" //") + 1); //LastName //Phone //
-    transactionData.lastName = transaction.substr(2, transaction.find(" //") - 2);
+    transactionData->lastName = transaction.substr(2, transaction.find(" //") - 2);
 
     transaction = transaction.substr(transaction.find(" //") + 1); //Phone //
-    transactionData.phoneNumber = transaction.substr(2, transaction.find(" //") - 2);
+    transactionData->phoneNumber = transaction.substr(2, transaction.find(" //") - 2);
 
     return transactionData;
 }
@@ -49,11 +50,11 @@ Customer* parseCustomer(string lineCustomerInfo)
     customerData->setFirstName(customerInfo);
     
     customerInfo = lineCustomerInfo.substr(lineCustomerInfo.find(" ") + 1); //LastName //Phone //
-    //                       customerInfo.substr(2, customerInfo.find(" ") - 3) ==> LastName
+    //                        customerInfo.substr(2, customerInfo.find(" ") - 3) ==> LastName
     customerData->setLastName(customerInfo.substr(2, customerInfo.find(" ") - 3));
 
     customerInfo = customerInfo.substr(customerInfo.find(" ") + 1); //Phone //
-    customerData->setPhoneNumber(customerInfo.substr(2, customerInfo.find("//") - 4));
+    customerData->setPhoneNumber(customerInfo.substr(2, customerInfo.find_last_of("//") - 4));
 
     return customerData;
 }
@@ -177,26 +178,34 @@ void Register::populateTransactions()
     {
         cout << "The transaction file is not in the correct format. Please check the file and try again." << endl;
         previousTransactions.close();
+        
         return;
     }
 
     while (getline(previousTransactions, lineTransaction))
     { 
-        if(lineTransaction == ""){break;}
-
-        lineCount++;
-        if(validateFile(lineTransaction, lineCount, "transactions"))
+        if(lineTransaction == "") 
         {
-            Transaction_Info formattedTransaction = parseTransaction(lineTransaction, 1);
-            Transaction_Info *Transaction_Info = &formattedTransaction;
-
-            allTransactions.push_back(Transaction_Info);
+            break;
         }
 
-        if(previousTransactions.eof()){break;}
+        lineCount++;
+        
+        if (validateFile(lineTransaction, lineCount, "transactions"))
+        {
+            Transaction_Info *formattedTransaction = parseTransaction(lineTransaction, 1);
+
+            allTransactions.push_back(formattedTransaction);
+        }
+
+        if (previousTransactions.eof())
+        {
+            break;
+        }
     }
-    
+
     cout << "Transaction information transfer completed " << lineCount << " lines. Closing file." << endl;
+    
     previousTransactions.close();
 
     return;
@@ -230,14 +239,17 @@ void Register::populateCustomers()
             Customer *formattedCustomer = parseCustomer(lineCustomer);
 
             allCustomers.push_back(formattedCustomer);
+            allCustomers[lineCount - 1]->displayCustomerInfo();
         }
 
-        if(customerList.eof()){break;}
+        if (customerList.eof())
+        {
+            break;
+        }
     }
 
     cout << "Customer information transfer completed " << lineCount << " lines. Closing file." << endl;
     customerList.close();
-
 
     return;
 }
@@ -271,7 +283,8 @@ bool Register::validateFile(string line, int lineCount, string file)
         try 
         {
             stod(tryString);
-        } catch (const std::out_of_range&) 
+        } 
+        catch (const std::out_of_range&) 
         {
             cout << "Argument is out of range for a double" << endl;
             return false;
@@ -289,6 +302,7 @@ bool Register::validateFile(string line, int lineCount, string file)
         cout << "File is not in the correct format. Please check the file and try again." << endl;
         return false;
     }
+    return true;
 }
 
 // This function will append every transaction inside allTransactions into the transaction file, and then clear the vector.
