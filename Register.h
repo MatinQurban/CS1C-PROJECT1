@@ -10,7 +10,7 @@ class Register
 {
     public:
         Register();
-        Register(vector<Transaction_Info *> Transactions, vector<Customer> Customers);
+        Register(vector<Transaction_Info *> Transactions, vector<Customer *> Customers);
         ~Register();
         vector<Transaction_Info*> findTransaction(const string& aPhoneNumber, const string& key);
         void outputTransactionHistory(const string &aPhoneNumber);
@@ -24,8 +24,8 @@ class Register
         //overload newTransaction to take in a Transaction_Info struct, or to take in a disk object
         bool validateFile(string line, int lineCount, string file);
 
+        vector<Customer *> allCustomers;  
     private:
         vector<Transaction_Info *> allTransactions;
-        vector<Customer > allCustomers;  
 };
 #endif // REGISTER_H

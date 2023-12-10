@@ -9,6 +9,5 @@ void displayTransaction(Transaction_Info *Transaction)
     cout << "First Name: " << Transaction->firstName << endl;
     cout << "Last Name: " << Transaction->lastName << endl;
     cout << "Phone Number: " << Transaction->phoneNumber << endl;
-    cout << "Budget: " << Transaction->budget << endl;
     cout << "*************************\n" << endl;
 }

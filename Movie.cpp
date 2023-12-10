@@ -45,6 +45,7 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
     int rating;
     string synopsis;
     int numStock;
+    
     while (inFile && !inFile.eof()) 
     {
         getline(inFile, title);
@@ -53,15 +54,16 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
         getline(inFile, bluRayOrDVD);
         inFile >> releaseYear;
         inFile >> rating;
-        inFile.ignore(10000, '\n');
+        inFile.ignore(1000, '\n');
         getline(inFile, synopsis);
         inFile >> numStock;
-        inFile.ignore(10000, '\n');
+        inFile.ignore(1000, '\n');
 
-        Movie movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
-        movie.setStock(numStock);
+        Movie *movie = new Movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
+        movie->setStock(numStock);
 
-        totalMovies.push_back(&movie);
+        totalMovies.push_back(movie);
+        inFile.ignore();
     }
     // //If a movie has more than 0 stock, add it to the availableMovies vector
     // for (int i = 0; i < totalMovies.size(); i++)
@@ -102,18 +104,22 @@ void Movie::displayListOfSellableItems(const string &outputFileName, vector<Movi
 
 double Movie::getPrice() const 
 {
-    return getPrice();
+    return calculatePrice();
 }
 
 double Movie::calculatePrice() const 
 {
-        if (rating >= 4) {
+    if (rating >= 4) 
+    {
         return 39.99;
-    } else if (rating >= 3) {
+    } else if (rating >= 3) 
+    {
         return 29.99;
-    } else if (rating >= 2) {
+    } else if (rating >= 2) 
+    {
         return 19.99;
-    } else {
+    } else 
+    {
         return 9.99;
     }
 }
@@ -125,7 +131,6 @@ void Movie::setLeadingActor(string leadingActor)
 
 void Movie::displayInfo() const
 {
-    cout << this;
     cout << "Title: " << title << endl;
     cout << "Genre: " << genre << endl;
     cout << "Leading Actor: " << leadingActor << endl;

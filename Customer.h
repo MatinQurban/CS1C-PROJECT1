@@ -26,6 +26,7 @@ class Customer
 
         // print
         void displayTransactionHistory();
+        void displayCustomerInfo();
 
     private:
         string firstName;

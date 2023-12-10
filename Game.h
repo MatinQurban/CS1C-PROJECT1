@@ -28,6 +28,7 @@ class Game : public Disk
         void displayInfo() const override;
 
         double calculatePrice() const;
+        Game& operator =(const Game& other);
 
     private:
         string primaryConsole;

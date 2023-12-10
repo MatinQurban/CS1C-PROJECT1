@@ -5,7 +5,14 @@ Shelf::Shelf()
     
 }
 
-Shelf::~Shelf() { }
+Shelf::~Shelf() 
+{
+    for (auto &disk : allDisks)
+    {
+        delete disk;
+    }
+    allDisks.clear();
+}
 
 void Shelf::addDisk(Disk *disk)
 {
@@ -17,8 +24,9 @@ bool Shelf::checkStock(const string &diskName)
     // Iterate through vector, look for diskName, return true if found, else, return false.
     for (const auto &disk : allDisks)
     {
-        if (disk->getTitle() == diskName && disk->getStock() > 0)
+        if (disk->getTitle().find(diskName) != -1 && disk->getStock() > 0)
         {
+            cout << "We have " << disk->getTitle() << " in stock!" << endl;
             return true;
         }
     }
@@ -41,11 +49,11 @@ bool Shelf::removeDisk(const string &diskName)
 
 Disk* Shelf::getDisk(const string &diskName)
 {
-    for (const auto &disk : allDisks)
+    for (int i = 0; i < allDisks.size(); i++)
     {
-        if (disk->getTitle() == diskName)
+        if (allDisks[i]->getTitle() == diskName)
         {
-            return disk;
+            return allDisks[i];
         }
     }
     return nullptr;

@@ -70,3 +70,12 @@ void Customer::addTransaction(const Transaction_Info &item)
 {
     transactions.push_back(item);
 }
+
+void Customer::displayCustomerInfo()
+{
+    cout << "First Name: " << firstName << endl;
+    cout << "Last Name: " << lastName << endl;
+    cout << "Phone Number: " << phoneNumber << endl;
+    cout << "Budget: " << budget << endl;
+    cout << endl;
+}

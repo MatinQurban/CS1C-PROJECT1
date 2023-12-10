@@ -49,19 +49,20 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game *>
         getline(inFile, synopsis);
         inFile >> numStock;
         inFile.ignore(10000, '\n');
+        inFile.ignore(10000, '\n');
 
-        Game game;
+        Game *game = new Game();
         //title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount
-        game.setTitle(title);
-        game.setGenre(genre);
-        game.setSynopsis(synopsis);
-        game.setReleaseYear(releaseYear);
-        game.setRating(rating);
-        game.setPrimaryConsole(primaryConsole);
-        game.setMaxCoopCount(maxCoopCount);
-        game.setStock(numStock);
+        game->setTitle(title);
+        game->setGenre(genre);
+        game->setSynopsis(synopsis);
+        game->setReleaseYear(releaseYear);
+        game->setRating(rating);
+        game->setPrimaryConsole(primaryConsole);
+        game->setMaxCoopCount(maxCoopCount);
+        game->setStock(numStock);
 
-        games.push_back(&game);
+        games.push_back(game);
     }
     // //If a movie has more than 0 stock, add it to the availableGames vector
     // for (int i = 0; i < games.size(); i++)
@@ -149,7 +150,6 @@ void Game::setMaxCoopCount(int maxCoopCount)
 
 void Game::displayInfo() const
 {
-    cout << this;
     cout << "Title: " << title << endl;
     cout << "Genre: " << genre << endl;
     cout << "Primary Console: " << primaryConsole << endl;
@@ -159,4 +159,19 @@ void Game::displayInfo() const
     cout << "Synopsis: " << synopsis << endl;
     cout << "Price: " << getPrice() << endl;    
     cout << endl;
+}
+
+Game& Game::operator=(const Game& other) 
+{
+    if (this != &other) {
+        title = other.title;
+        genre = other.genre;
+        synopsis = other.synopsis;
+        releaseYear = other.releaseYear;
+        rating = other.rating;
+        primaryConsole = other.primaryConsole;
+        maxCoopCount = other.maxCoopCount;
+        numStock = other.numStock;
+    }
+    return *this;
 }

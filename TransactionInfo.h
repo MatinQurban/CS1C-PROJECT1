@@ -11,7 +11,6 @@ struct Transaction_Info
     string firstName;
     string lastName;
     string phoneNumber;
-    int budget;
 };
 
 void displayTransaction(Transaction_Info *Transaction);
