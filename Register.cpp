@@ -84,8 +84,6 @@ Register::Register(vector<Transaction_Info *> Transactions, vector<Customer *> C
 Register::~Register() 
 { 
     dumpTransactions();
-    cout << "\nRegister destructor called." << endl << endl;
-    
     clearTransactions();
 }
 
@@ -126,9 +124,9 @@ void Register::newTransaction(const Disk* disk, const string& diskType, Customer
     allTransactions.push_back(Transaction_Info);
     
     customer.addTransaction(*Transaction_Info);
-    cout << "Transaction Completed!" << endl;
+    cout << "\nTransaction Completed!" << endl;
     
-    cout << "Transaction Details:" << endl;
+    cout << "Transaction Details:" << endl << endl;
     displayTransaction(Transaction_Info);
     
     dumpTransactions();
@@ -137,6 +135,7 @@ void Register::newTransaction(const Disk* disk, const string& diskType, Customer
 void Register::displayTransactionsforCustomer(const string& phoneNumber)
 {
     bool found = false;
+    int transactionCount = 1;
 
     for (int i = 0; i < allTransactions.size(); i++)
     {
@@ -144,9 +143,10 @@ void Register::displayTransactionsforCustomer(const string& phoneNumber)
         {
             found = true;
 
-            cout << "--Transaction " << i+1 << ":" << endl;
+            cout << "\n--Transaction " << transactionCount << ":" << endl;
             displayTransaction(allTransactions[i]);
-            cout << endl;
+            
+            transactionCount++;
         }
     }
 
@@ -220,7 +220,6 @@ void Register::populateTransactions()
 
     return;
 }
-
 
 void Register::populateCustomers()
 {
@@ -328,8 +327,8 @@ void Register::dumpTransactions()
     //vector<Transaction_Info*> allTransactions;
 
     transactionFile.open("Store_Transactions.txt");
-    
-    cout << "\nallTransactions size: " << this->allTransactions.size() << endl;
+
+    transactionFile << "//DiskName //DiskType //Total //FirstName //LastName //Phone //" << endl;
     
     for (int i = 0; i < this->allTransactions.size(); i++)
     {
@@ -405,6 +404,7 @@ void Register::clearTransactions()
     for (int i = 0; i < allTransactions.size(); i++)
     {
         delete allTransactions[i];
+
         allTransactions[i] = nullptr;
     }
     

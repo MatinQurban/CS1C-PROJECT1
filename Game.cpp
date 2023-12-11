@@ -64,14 +64,6 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game *>
 
         games.push_back(game);
     }
-    // //If a movie has more than 0 stock, add it to the availableGames vector
-    // for (int i = 0; i < games.size(); i++)
-    // {
-    //     if (games[i]->getStock() > 0)
-    //     {
-    //         availableGames.push_back(games[i]);
-    //     }
-    // }
 
     inFile.close();
 }
@@ -150,9 +142,7 @@ void Game::setMaxCoopCount(int maxCoopCount)
 
 void Game::displayInfo() const
 {
-    cout << "We are in the function" << endl;
-    cout << "Title: " << title << endl;
-    cout << "We got past one line" << endl;
+    cout << "Title: " << title << endl;\
     cout << "Genre: " << genre << endl;
     cout << "Primary Console: " << primaryConsole << endl;
     cout << "Maximum Coop Count: " << maxCoopCount << endl;

@@ -18,10 +18,10 @@ class Register
         void populateCustomers();
         void dumpTransactions();
         void newTransaction(const string& diskName, const string& diskType, const double& price, Customer &customer);
+        //overload newTransaction to take in a disk object
         void newTransaction(const Disk* disk, const string& diskType, Customer& customer);
         void displayTransactionsforCustomer(const string& phoneNumber);
         void addCustomer(Customer& customer);
-        //overload newTransaction to take in a Transaction_Info struct, or to take in a disk object
         bool validateFile(string line, int lineCount, string file);
         
         
