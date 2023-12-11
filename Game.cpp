@@ -47,9 +47,9 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game *>
         inFile >> rating;
         inFile.ignore(10000, '\n');
         getline(inFile, synopsis);
-        inFile >> numStock;
+        // inFile >> numStock;
         inFile.ignore(10000, '\n');
-        inFile.ignore(10000, '\n');
+        // inFile.ignore(10000, '\n');
 
         Game *game = new Game();
         //title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount
@@ -60,7 +60,7 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game *>
         game->setRating(rating);
         game->setPrimaryConsole(primaryConsole);
         game->setMaxCoopCount(maxCoopCount);
-        game->setStock(numStock);
+        // game->setStock(numStock);
 
         games.push_back(game);
     }

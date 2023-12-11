@@ -23,12 +23,12 @@ int main()
     vector<Disk*> disks; // vector for total inventory, regardless of whether it's in stock or not
 
     // add movies and games to disks vector, then pass to shelf
-
-    cout << "Total Inventory: " << disks.size() << " Disks" << endl;
+    
     cout << "Movies: " << movies.size() << endl;
     
     for (int i = 0; i < movies.size(); i++)
     {
+        // cout << "Movie " << i + 1 << ": " << movies[i]->getTitle() << endl;
         disks.push_back(movies[i]);
     }
 
@@ -36,6 +36,7 @@ int main()
     
     for (int i = 0; i < games.size(); i++)
     {
+        // cout << "Game " << i + 1 << ": " << games[i]->getTitle() << endl;
         disks.push_back(games[i]);
     }
 
@@ -44,6 +45,8 @@ int main()
     {
         shelf->addDisk(disks[i]);
     }
+    
+    cout << "Total Inventory: " << disks.size() << " Disks" << endl;
 
     // cout << "Size of transactions: " << register1->allTransactions.size() << endl;
     
@@ -52,7 +55,7 @@ int main()
     string phoneNumber;
     double budget;
 
-    cout << "Welcome to the store!" << endl;
+    cout << "\nWelcome to the store!" << endl;
     cout << "\nEnter first name: ";
     getline(cin, firstName);
 
@@ -112,17 +115,17 @@ int main()
             {
                 case 1:
                 {
-                    cout << "What is the title of the game or movie you are looking for?" << endl;
+                    cout << "\nWhat is the title of the game or movie you are looking for?" << endl;
                     getline(cin, diskName);
 
                     if (shelf->checkStock(diskName)) 
                     {
-                        cout << "Found entry for: " << diskName << ". Press Enter key to continue." << endl;
+                        cout << "\nFound entry for: " << diskName << ". Press Enter key to continue." << endl;
                         switchValid = true;
                     }
                     else
                     {
-                        cout << "Did not find entry for: " << diskName << ". Press Enter key to continue." << endl;
+                        cout << "\nDid not find entry for: " << diskName << ". Press Enter key to continue." << endl;
                     }
                     
                     cin.clear();

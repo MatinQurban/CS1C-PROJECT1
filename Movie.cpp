@@ -44,7 +44,7 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
     int releaseYear;
     int rating;
     string synopsis;
-    int numStock;
+    // int numStock;
     
     while (inFile && !inFile.eof()) 
     {
@@ -56,23 +56,14 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
         inFile >> rating;
         inFile.ignore(1000, '\n');
         getline(inFile, synopsis);
-        inFile >> numStock;
+        // inFile >> numStock;
         inFile.ignore(1000, '\n');
 
         Movie *movie = new Movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
-        movie->setStock(numStock);
+        // movie->setStock(numStock);
 
         totalMovies.push_back(movie);
-        inFile.ignore();
     }
-    // //If a movie has more than 0 stock, add it to the availableMovies vector
-    // for (int i = 0; i < totalMovies.size(); i++)
-    // {
-    //     if (totalMovies[i]->getStock() > 0)
-    //     {
-    //         availableMovies.push_back(totalMovies[i]);
-    //     }
-    // }
     
     inFile.close();
 }
