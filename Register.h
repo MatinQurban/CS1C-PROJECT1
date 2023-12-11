@@ -4,8 +4,6 @@
 
 #include "Disk.h"
 #include "Customer.h"
-#include "TransactionInfo.h"
-
 class Register
 {
     public:
@@ -26,10 +24,10 @@ class Register
         //overload newTransaction to take in a Transaction_Info struct, or to take in a disk object
         bool validateFile(string line, int lineCount, string file);
         
-        vector<Transaction_Info *> allTransactions;
         
     private:
         void clearTransactions();
+        vector<Transaction_Info *> allTransactions;
         vector<Customer *> allCustomers;  
 };
 #endif // REGISTER_H

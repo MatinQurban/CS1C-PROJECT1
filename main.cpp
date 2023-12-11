@@ -70,8 +70,7 @@ int main()
     getline(cin, lastName);
 
     cout << "\nEnter phone number: ";
-    cin >> phoneNumber;
-    cin.ignore(1000, '\n');
+    getline(cin, phoneNumber);
 
     cout << "\nWhat is your budget?: ";
     cin >> budget;
@@ -87,6 +86,7 @@ int main()
     string diskType;
     string diskName;
     char validateSelection;
+
     do
     {
         while (!valid)
@@ -143,12 +143,12 @@ int main()
             {
                 case 1:
                 {
-                    cout << "What is the title of the game or movie you are looking for?\n";
+                    cout << "What is the title of the game or movie you are looking for?" << endl;
                     getline(cin, diskName);
 
                     if (shelf->checkStock(diskName)) 
                     {
-                        cout << "\n\nFound entry for: " << diskName << ". Press Enter key to continue." << endl;
+                        cout << "\mFound entry for: " << diskName << ". Press Enter key to continue." << endl;
                         switchValid = true;
                     }
                     else
@@ -169,7 +169,7 @@ int main()
                     
                     while (!switchValid)
                     {
-                        cout << "\nWhat is the title of the game you are looking for?\n";
+                        cout << "What is the title of the game you are looking for?" << endl;
                         getline(cin, diskName);
                         cin.clear();
 
@@ -211,7 +211,7 @@ int main()
                             register1->newTransaction(customerGame, diskType, Ignoctio);
                             
                             cout << "Transaction Details: " << endl << endl;
-                            cout << "\nYou have bought " << customerGame->getTitle() << endl;
+                            cout << "You have bought " << customerGame->getTitle() << endl;
                             
                             
                             budget = budget - customerGame->getPrice();
@@ -231,39 +231,40 @@ int main()
                         else
                         {
                             cout << "You don't have enough money! ($" << Ignoctio.getBudget() << ")" << endl;
-                            switchValid = false;
-                            
+                            valid = false;
+                            break;
                         }
-                    break;
+                        break;
                 }
                 case 3: 
                 {
-                    diskType = "Movie";
+                    diskType = "Movie";  
                     switchValid = false;
                     
                     while (!switchValid)
                     {
-                        cout << "\nWhat is the title of the movie you are looking for?\n";
+                        cout << "What is the title of the movie you are looking for?" << endl;
                         getline(cin, diskName);
                         cin.clear();
 
                         if (shelf->checkStock(diskName)) 
                         {
-                            cout << "\n" << diskName << " is currently in stock!" << endl << endl;
+                            cout << "Found entry for: " << diskName << "." << endl;
                             switchValid = true;
                         }
                         else
                         {
-                            cout << "\n" << diskName << " is not in stock!" << endl << endl;
+                            cout << "Did not find entry for: " << diskName << ". Press Enter key to continue." << endl;
                         }
                     }
 
                     //need to add a checkout portion for if the game is in stock (switchValid = true)
                     //need to actually select the game from the shelf lol
                     //need to instantiate a register so customer can buy the game !
-                    if (switchValid)
-                    {
+
+
                         Disk* customerMovie = shelf->getDisk(diskName);
+                        
                         cout << "Movie Information:" << endl; //disk information
                         cout << "-----------------" << endl;
                         // "Title: "
@@ -272,40 +273,41 @@ int main()
                         // "Release Year: "
                         // "Rating: "
                         // "Price: "
-                        // "Leading Actor: "
-                        // "BluRay or DVD?: "
+                        // "Primary Console: "
+                        // "Maximum Coop Count: "
                         customerMovie->displayInfo();
-
+                        
                         if (budget >= customerMovie->getPrice())
                         {
                             //convert this portion of code to a transaction using transaction class.
                             //will need to overload new transaction function to take disk
-                            register1->newTransaction(customerMovie, diskType, Ignoctio);   
-                            cout << "\nYou have bought " << customerMovie->getTitle() << endl;
-                                
+                            register1->newTransaction(customerMovie, diskType, Ignoctio);
+                            
+                            cout << "Transaction Details: " << endl << endl;
+                            cout << "You have bought " << customerMovie->getTitle() << endl;
+                            
+                            
                             budget = budget - customerMovie->getPrice();
-                            valid = false;
-                            switchValid = true; 
-                                    
-                            //also need to clear movie from shelf; will decrement stock by 1
-                            for (int i = 0; i < movies.size(); i++)
+                            //also need to clear game from shelf, will need to remove from availableGames vector instead of total stock vector
+                            //can use itemPurchased function to decrement stock
+                            for (int i = 0; i < games.size(); i++)
                             {
                                 if (movies[i] == customerMovie)
                                 {
                                     movies[i]->itemPurchased();
                                 }
                             }
-                                
+
+                            valid = false;
+                            switchValid = true;
                         }
                         else
                         {
-                            cout << "You don't have enough money!" << endl;
-                            switchValid = true;
+                            cout << "You don't have enough money! ($" << Ignoctio.getBudget() << ")" << endl;
+                            valid = false;
                             break;
-                        }    
-                    }
-                    
-                    break;
+                        }
+                        break;
                 }
 
                 case 4:
