@@ -69,11 +69,13 @@ Register::Register(vector<Transaction_Info *> Transactions, vector<Customer *> C
 {
     populateTransactions();
     populateCustomers();
-    for(int i = 0; i < Transactions.size(); i++)
+    
+    for (int i = 0; i < Transactions.size(); i++)
     {
         allTransactions.push_back(Transactions[i]);
     }
-    for(int i = 0; i < Customers.size(); i++)
+    
+    for (int i = 0; i < Customers.size(); i++)
     {
         allCustomers.push_back(Customers[i]);
     }
@@ -82,17 +84,15 @@ Register::Register(vector<Transaction_Info *> Transactions, vector<Customer *> C
 Register::~Register() 
 { 
     dumpTransactions();
-    // also need to delete all the pointers in the vector. Now what vector? you may ask, figure it out cuz idk rn either.
-    for(int i = 0; i < allTransactions.size(); i++)
-    {
-        delete allTransactions[i];
-    }
-    allTransactions.clear();
+    cout << "\nRegister destructor called." << endl << endl;
+    
+    clearTransactions();
 }
 
 void Register::newTransaction(const string& diskName, const string& diskType, const double& price, Customer& customer)
 {
     Transaction_Info *Transaction_Info;
+    
     Transaction_Info->diskName = diskName;
     Transaction_Info->diskType = diskType;
     Transaction_Info->price = price;
@@ -102,8 +102,11 @@ void Register::newTransaction(const string& diskName, const string& diskType, co
 
     populateTransactions();
     populateCustomers();
+    
     allTransactions.push_back(Transaction_Info);
+    
     customer.addTransaction(*Transaction_Info);
+    
     dumpTransactions();
 }
 
@@ -119,35 +122,37 @@ void Register::newTransaction(const Disk* disk, const string& diskType, Customer
 
     populateTransactions();
     populateCustomers();
+    
     allTransactions.push_back(Transaction_Info);
+    
     customer.addTransaction(*Transaction_Info);
     cout << "Transaction Completed!" << endl;
+    
     cout << "Transaction Details:" << endl;
     displayTransaction(Transaction_Info);
+    
     dumpTransactions();
 }
 
-void Register::displayTransactionsforCustomer(vector<Transaction_Info*> customerTransactions)
+void Register::displayTransactionsforCustomer(const string& phoneNumber)
 {
-    if (customerTransactions.size() == 0)
+    bool found = false;
+
+    for (int i = 0; i < allTransactions.size(); i++)
     {
-        cout << "No transactions found for Customer." << endl;
-        return;
-    }
-    else
-    {
-        int count = 0;
-        // loop through customerTransactions<> vector and display each transaction. should be a function for that
-        for(int i = 0; i < customerTransactions.size(); i++)
+        if (allTransactions[i]->phoneNumber == phoneNumber)
         {
-            cout << "****** Transaction " << i+1 << " ******" << endl;
-            displayTransaction(customerTransactions[i]);
+            found = true;
+
+            cout << "--Transaction " << i+1 << ":" << endl;
+            displayTransaction(allTransactions[i]);
             cout << endl;
-            count++;
         }
-        cout << "Total Transactions Found: " << count << endl;
-    
-        return;
+    }
+
+    if (!found)
+    {
+        cout << "No transactions found for this customer." << endl;
     }
 }
 
@@ -158,22 +163,27 @@ void Register::addCustomer(Customer& customer)
     {
         if (allCustomers[i]->getPhoneNumber() == customer.getPhoneNumber())
         {
-            cout << "Customer already exists in the system." << endl;
+            cout << "Welcome back." << endl;
             return;
         }
     }
+
     allCustomers.push_back(&customer);
 }
+
 // This function will populate the allTransactions vector with the transactions from the transaction file.
 void Register::populateTransactions()
 {
     ifstream previousTransactions;
+    
+    clearTransactions();
 	previousTransactions.open("Store_Transactions.txt");
 
     string lineTransaction;
     int lineCount = 0;
 
     getline(previousTransactions, lineTransaction);
+    
     if (!validateFile(lineTransaction, lineCount, "transactions"))
     {
         cout << "The transaction file is not in the correct format. Please check the file and try again." << endl;
@@ -184,7 +194,7 @@ void Register::populateTransactions()
 
     while (getline(previousTransactions, lineTransaction))
     { 
-        if(lineTransaction == "") 
+        if (lineTransaction == "") 
         {
             break;
         }
@@ -221,16 +231,21 @@ void Register::populateCustomers()
     int lineCount = 0;
 
     getline(customerList, lineCustomer);
+    
     if (!validateFile(lineCustomer, lineCount, "customers"))
     {
         cout << "The customer file is not in the correct format. Please check the file and try again." << endl;
         customerList.close();
+        
         return;
     }
     
     while (getline(customerList, lineCustomer))
     { 
-        if (lineCustomer == ""){break;}
+        if (lineCustomer == "")
+        {
+            break;
+        }
 
         lineCount++;
 
@@ -239,7 +254,6 @@ void Register::populateCustomers()
             Customer *formattedCustomer = parseCustomer(lineCustomer);
 
             allCustomers.push_back(formattedCustomer);
-            allCustomers[lineCount - 1]->displayCustomerInfo();
         }
 
         if (customerList.eof())
@@ -248,7 +262,7 @@ void Register::populateCustomers()
         }
     }
 
-    cout << "Customer information transfer completed " << lineCount << " lines. Closing file." << endl;
+    cout << "\nCustomer information transfer completed " << lineCount << " lines. Closing file." << endl;
     customerList.close();
 
     return;
@@ -302,68 +316,43 @@ bool Register::validateFile(string line, int lineCount, string file)
         cout << "File is not in the correct format. Please check the file and try again." << endl;
         return false;
     }
+    
     return true;
 }
 
 // This function will append every transaction inside allTransactions into the transaction file, and then clear the vector.
 void Register::dumpTransactions()
 {
-    // ofstream transactionFile;
-    
-    // transactionFile.open("Store_Transactions.txt", ios::app); // Open file in append mode
-    
-    // for (int i = 0; i < allTransactions.size(); i++) 
-    // {
-    //     string lineTotal = "//" + allTransactions[i]->diskName + " //" +
-    //                               allTransactions[i]->diskType + " //" +
-    //                               to_string(allTransactions[i]->price) + " //" +
-    //                               allTransactions[i]->firstName + " //" +
-    //                               allTransactions[i]->lastName + " //" +
-    //                               allTransactions[i]->phoneNumber + " //";
-        
-    //     transactionFile << lineTotal << endl;
-    // }
-
-    // // Clear the vector after writing to the file
-    // for (auto &transaction : allTransactions) 
-    // {
-    //     delete transaction;  // Deallocate memory since transactions are pointers
-    // }
-
-    // allTransactions.clear();
-    // transactionFile.close();
-
     ofstream transactionFile;
     string lineTotal;
     //vector<Transaction_Info*> allTransactions;
 
     transactionFile.open("Store_Transactions.txt");
-
-    vector<Transaction_Info*> allTransactions;
     
-    for (int i = 0; i < allTransactions.size(); i++)
+    cout << "\nallTransactions size: " << this->allTransactions.size() << endl;
+    
+    for (int i = 0; i < this->allTransactions.size(); i++)
     {
         lineTotal = "";
-        lineTotal += "//" + allTransactions[i]->diskName + " ";
-        lineTotal += "//" + allTransactions[i]->diskType + " ";
-        lineTotal += "//" + to_string(allTransactions[i]->price) + " ";
-        lineTotal += "//" + allTransactions[i]->firstName + " ";
-        lineTotal += "//" + allTransactions[i]->lastName + " ";
-        lineTotal += "//" + allTransactions[i]->phoneNumber + " //";
+        lineTotal += "//" + this->allTransactions[i]->diskName + " ";
+        lineTotal += "//" + this->allTransactions[i]->diskType + " ";
+        lineTotal += "//" + to_string(this->allTransactions[i]->price) + " ";
+        lineTotal += "//" + this->allTransactions[i]->firstName + " ";
+        lineTotal += "//" + this->allTransactions[i]->lastName + " ";
+        lineTotal += "//" + this->allTransactions[i]->phoneNumber + " //";
 
         transactionFile << lineTotal << endl;
     }
+    cout << "\nTransaction information transfer completed. Closing file." << endl;
     
-    allTransactions.clear();
-
     transactionFile.close();
 }
 
 vector<Transaction_Info*> Register::findTransaction(const string& aPhoneNumber, const string& key) //Key: "All", "First", "Last", or name of game/movie
 {
     vector<Transaction_Info*> foundTransactions;
-    //search through all transactions vector or file and whatever matches with phone number, output it.
     
+    //search through all transactions vector or file and whatever matches with phone number, output it.
     if (key == "First")
     {
         for (int i = 0; i < allTransactions.size(); i++)
@@ -402,12 +391,22 @@ vector<Transaction_Info*> Register::findTransaction(const string& aPhoneNumber, 
             if (allTransactions[i]->phoneNumber == aPhoneNumber && allTransactions[i]->diskName == key)
             {
                 foundTransactions.push_back(allTransactions[i]);
+                
                 return foundTransactions;
             }
         }
     }
     
     return foundTransactions;
-    
 }
 
+void Register::clearTransactions()
+{
+    for (int i = 0; i < allTransactions.size(); i++)
+    {
+        delete allTransactions[i];
+        allTransactions[i] = nullptr;
+    }
+    
+    allTransactions.clear();
+}

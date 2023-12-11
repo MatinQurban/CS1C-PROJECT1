@@ -6,8 +6,6 @@ using namespace std;
 int main()
 {
     Register* register1 = new Register();
-    register1->populateTransactions(); // Loads the transaction history from the file
-    register1->populateCustomers(); // Loads the customer information from the file
     // displayTransaction(register1->allTransactions[1]); // Testing to see if we read from files correctly
     // register1->allCustomers[1]->displayCustomerInfo(); // Testing to see if we read from files correctly
 
@@ -56,6 +54,8 @@ int main()
     {
         shelf->addDisk(disks[i]);
     }
+
+    cout << "Size of transactions: " << register1->allTransactions.size() << endl;
     
     string firstName;
     string lastName;
@@ -87,7 +87,6 @@ int main()
     string diskType;
     string diskName;
     char validateSelection;
-
     do
     {
         while (!valid)
@@ -149,7 +148,7 @@ int main()
 
                     if (shelf->checkStock(diskName)) 
                     {
-                        cout << "\nFound entry for: " << diskName << ". Press Enter key to continue." << endl;
+                        cout << "\n\nFound entry for: " << diskName << ". Press Enter key to continue." << endl;
                         switchValid = true;
                     }
                     else
@@ -176,12 +175,13 @@ int main()
 
                         if (shelf->checkStock(diskName)) 
                         {
-                            cout << "\nFound entry for: " << diskName << ". Press Enter key to continue." << endl;
+                            cout << "\nFound entry for: " << diskName << "." << endl;
                             switchValid = true;
                         }
                         else
                         {
                             cout << "\nDid not find entry for: " << diskName << ". Press Enter key to continue." << endl;
+                            break;
                         }
                     }
 
@@ -189,9 +189,9 @@ int main()
                     //need to actually select the game from the shelf lol
                     //need to instantiate a register so customer can buy the game !
 
-                    if(switchValid)
-                    {
+
                         Disk* customerGame = shelf->getDisk(diskName);
+                        
                         cout << "Game Information:" << endl; //disk information
                         cout << "-----------------" << endl;
                         // "Title: "
@@ -203,21 +203,23 @@ int main()
                         // "Primary Console: "
                         // "Maximum Coop Count: "
                         customerGame->displayInfo();
+                        
                         if (budget >= customerGame->getPrice())
                         {
                             //convert this portion of code to a transaction using transaction class.
                             //will need to overload new transaction function to take disk
                             register1->newTransaction(customerGame, diskType, Ignoctio);
-
-                            cout << "You have bought " << customerGame->getTitle() << endl;
-                            cout << "Transaction Details: " << endl;
+                            
+                            cout << "Transaction Details: " << endl << endl;
+                            cout << "\nYou have bought " << customerGame->getTitle() << endl;
+                            
                             
                             budget = budget - customerGame->getPrice();
                             //also need to clear game from shelf, will need to remove from availableGames vector instead of total stock vector
                             //can use itemPurchased function to decrement stock
-                            for(int i = 0; i < games.size(); i++)
+                            for (int i = 0; i < games.size(); i++)
                             {
-                                if(games[i] == customerGame)
+                                if (games[i] == customerGame)
                                 {
                                     games[i]->itemPurchased();
                                 }
@@ -225,14 +227,13 @@ int main()
 
                             valid = false;
                             switchValid = true;
-
                         }
                         else
                         {
-                            cout << "You don't have enough money!" << endl;
+                            cout << "You don't have enough money! ($" << Ignoctio.getBudget() << ")" << endl;
                             switchValid = false;
+                            
                         }
-                    }
                     break;
                 }
                 case 3: 
@@ -275,62 +276,50 @@ int main()
                         // "BluRay or DVD?: "
                         customerMovie->displayInfo();
 
-                
-                                if (budget >= customerMovie->getPrice())
+                        if (budget >= customerMovie->getPrice())
+                        {
+                            //convert this portion of code to a transaction using transaction class.
+                            //will need to overload new transaction function to take disk
+                            register1->newTransaction(customerMovie, diskType, Ignoctio);   
+                            cout << "\nYou have bought " << customerMovie->getTitle() << endl;
+                                
+                            budget = budget - customerMovie->getPrice();
+                            valid = false;
+                            switchValid = true; 
+                                    
+                            //also need to clear movie from shelf; will decrement stock by 1
+                            for (int i = 0; i < movies.size(); i++)
+                            {
+                                if (movies[i] == customerMovie)
                                 {
-                                    //convert this portion of code to a transaction using transaction class.
-                                    //will need to overload new transaction function to take disk
-                                    register1->newTransaction(customerMovie, diskType, Ignoctio);
-                                
-                                
-                                    cout << "You have bought " << customerMovie->getTitle() << endl;
-                                
-                                    budget = budget - customerMovie->getPrice();
-                                    valid = false;
-                                    switchValid = true; 
-                                    //also need to clear movie from shelf; will decrement stock by 1
-                                    for(int i = 0; i < movies.size(); i++)
-                                    {
-                                        if(movies[i] == customerMovie)
-                                        {
-                                            movies[i]->itemPurchased();
-                                        }
-                                    }
-                                
+                                    movies[i]->itemPurchased();
                                 }
-                                else
-                                {
-                                    cout << "You don't have enough money!" << endl;
-                                    switchValid = false;
-                                }
-                            
+                            }
+                                
+                        }
+                        else
+                        {
+                            cout << "You don't have enough money!" << endl;
+                            switchValid = true;
+                            break;
+                        }    
                     }
+                    
                     break;
                 }
 
                 case 4:
                 {
-                    // Show Transaction History of the Customer
-                    // Would you like to see history of current customer or 
-                    // Would you like to look up a customer by phone number?
+                    register1->displayTransactionsforCustomer(phoneNumber);
                     
-                    //vector<Transaction_Info*> customerTransactions;
-
-                    cout << "Transaction History: " << endl;
-                    cout << "---------------------" << endl;
-                    cout << "Customer Name: " << firstName << " " << lastName << endl;
-                    cout << "Phone Number: " << phoneNumber << endl;
-                    cout << "Budget: " << budget << endl << endl;
-
-                    cout << "" << endl;
                     valid = false;
                     break;
                 }
 
                 case 0:
-                {
-                    //dumpTransactions; 
-                    
+                {                
+                    delete register1;
+
                     return 0;
                 }
                 

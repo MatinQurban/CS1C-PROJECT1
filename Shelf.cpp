@@ -24,14 +24,16 @@ bool Shelf::checkStock(const string &diskName)
     // Iterate through vector, look for diskName, return true if found, else, return false.
     for (const auto &disk : allDisks)
     {
-        if (disk->getTitle().find(diskName) != -1 && disk->getStock() > 0)
+        if (disk->getTitle() == diskName && disk->getStock() > 0)
         {
-            cout << "We have " << disk->getTitle() << " in stock!" << endl;
+            cout << "\nWe have " << disk->getTitle() << " in stock!" << endl;
             return true;
         }
     }
     return false;
 }
+
+
 
 bool Shelf::removeDisk(const string &diskName)
 {

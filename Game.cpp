@@ -150,7 +150,9 @@ void Game::setMaxCoopCount(int maxCoopCount)
 
 void Game::displayInfo() const
 {
+    cout << "We are in the function" << endl;
     cout << "Title: " << title << endl;
+    cout << "We got past one line" << endl;
     cout << "Genre: " << genre << endl;
     cout << "Primary Console: " << primaryConsole << endl;
     cout << "Maximum Coop Count: " << maxCoopCount << endl;
