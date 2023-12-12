@@ -19,12 +19,15 @@ void Shelf::addDisk(Disk *disk)
     allDisks.push_back(disk);
 }
 
-bool Shelf::checkStock(const string &diskName)
+bool Shelf::checkStock(const string& diskName)
 {
     // Iterate through vector, look for diskName, return true if found, else, return false.
+    cout << "\n" << diskName << endl;
+    
     for (const auto &disk : allDisks)
     {
-        if (disk->getTitle() == diskName && disk->getStock() > 0)
+
+        if (disk->getTitle() == diskName)
         {
             cout << "\nWe have " << disk->getTitle() << " in stock!" << endl;
             return true;
@@ -33,9 +36,7 @@ bool Shelf::checkStock(const string &diskName)
     return false;
 }
 
-
-
-bool Shelf::removeDisk(const string &diskName)
+bool Shelf::removeDisk(const string& diskName)
 {
     // Check if the disk exists in the vector, if so, remove it.
     for (auto diskToFind = allDisks.begin(); diskToFind != allDisks.end(); diskToFind++)

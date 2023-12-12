@@ -87,7 +87,6 @@ void Game::displayListOfSellableItems(const string &outputFileName, vector<Game*
         outFile << "Release Year: " << games[i]->releaseYear << endl;
         outFile << "Rating: " << games[i]->rating << endl;
         outFile << "Synopsis: " << games[i]->synopsis << endl;
-        outFile << "Stock: " << games[i]->numStock << endl;
         outFile << endl;
     }
 

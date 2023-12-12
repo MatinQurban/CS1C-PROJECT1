@@ -28,7 +28,7 @@ int main()
     
     for (int i = 0; i < movies.size(); i++)
     {
-        // cout << "Movie " << i + 1 << ": " << movies[i]->getTitle() << endl;
+        cout << "Movie " << i + 1 << ": " << movies[i]->getTitle() << endl;
         disks.push_back(movies[i]);
     }
 
@@ -36,7 +36,7 @@ int main()
     
     for (int i = 0; i < games.size(); i++)
     {
-        // cout << "Game " << i + 1 << ": " << games[i]->getTitle() << endl;
+        cout << "Game " << i + 1 << ": " << games[i]->getTitle() << endl;
         disks.push_back(games[i]);
     }
 
@@ -117,19 +117,39 @@ int main()
                 {
                     cout << "\nWhat is the title of the game or movie you are looking for?" << endl;
                     getline(cin, diskName);
-
-                    if (shelf->checkStock(diskName)) 
+                    
+                    cout << "You entered: " << diskName << endl;
+                    cin.clear();
+                    
+                    //========================================
+                    bool found = false;
+                    string name;
+                    
+                    for (const auto &disk : shelf->allDisks)
                     {
-                        cout << "\nFound entry for: " << diskName << ". Press Enter key to continue." << endl;
+                        name = disk->getTitle();
+                        
+                        cout << "Comparing " << name << " to " << diskName << endl;
+                        
+                        if (disk->getTitle() == diskName)
+                        {
+                            cout << "\nWe have " << disk->getTitle() << " in stock!" << endl;
+                            found = true;
+                        }
+                    }
+                    //========================================
+
+                    if (found) 
+                    {
+                        cout << "\nFound entry for: " << diskName << "." << endl;
                         switchValid = true;
                     }
                     else
                     {
-                        cout << "\nDid not find entry for: " << diskName << ". Press Enter key to continue." << endl;
+                        cout << "\nDid not find entry for: " << diskName << "." << endl;
                     }
                     
                     cin.clear();
-                    
                     break;
                 }
 
@@ -140,18 +160,18 @@ int main()
                     
                     while (!switchValid)
                     {
-                        cout << "What is the title of the game you are looking for?" << endl;
+                        cout << "\nWhat is the title of the game you are looking for?" << endl;
                         getline(cin, diskName);
                         cin.clear();
-
+    
                         if (shelf->checkStock(diskName)) 
                         {
-                            cout << "Found entry for: " << diskName << "." << endl;
+                            cout << "\nFound entry for: " << diskName << "." << endl;
                             switchValid = true;
                         }
                         else
                         {
-                            cout << "Did not find entry for: " << diskName << "." << endl;
+                            cout << "\nDid not find entry for: " << diskName << "." << endl;
                             switchValid = false;
                         }
                     }
@@ -212,7 +232,7 @@ int main()
                         }
                         else
                         {
-                            cout << "Did not find entry for: " << diskName << ". Press Enter key to continue." << endl;
+                            cout << "Did not find entry for: " << diskName << "." << endl;
                             switchValid = false;
                         }
                     }

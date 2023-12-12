@@ -17,9 +17,9 @@ public:
     //void outputTransactionHistory(const string &aPhoneNumber);
 
     Disk *getDisk(const string &diskName);
+    vector<Disk *> allDisks;
 
 private:
-    vector<Disk *> allDisks;
 };
 #endif // SHELF_H
 

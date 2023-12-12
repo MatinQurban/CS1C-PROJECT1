@@ -58,6 +58,7 @@ void Movie::createListOfSellableItems(const string& inputFileName, vector<Movie*
         getline(inFile, synopsis);
         // inFile >> numStock;
         inFile.ignore(1000, '\n');
+        
 
         Movie *movie = new Movie(title, genre, synopsis, releaseYear, rating, leadingActor, bluRayOrDVD);
         // movie->setStock(numStock);
