@@ -4,7 +4,7 @@ Game::Game()
 {
     primaryConsole = "";
     maxCoopCount = 0;
-    numStock = 3;
+    //numStock = 3;
 }
 
 Game::Game(string title, string genre, string synopsis, int releaseYear, int rating, string primaryConsole, int maxCoopCount)
@@ -35,7 +35,7 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game *>
     int releaseYear;
     int rating;
     string synopsis;
-    int numStock;
+    //int numStock;
 
     while (inFile && !inFile.eof()) 
     {
@@ -50,6 +50,11 @@ void Game::createListOfSellableItems(const string& inputFileName, vector<Game *>
         // inFile >> numStock;
         inFile.ignore(10000, '\n');
         // inFile.ignore(10000, '\n');
+
+        while (isspace(title.back())) 
+        {
+            title.pop_back();
+        }
 
         Game *game = new Game();
         //title, genre, synopsis, releaseYear, rating, primaryConsole, maxCoopCount
@@ -141,7 +146,7 @@ void Game::setMaxCoopCount(int maxCoopCount)
 
 void Game::displayInfo() const
 {
-    cout << "Title: " << title << endl;\
+    cout << "Title: " << title << endl;
     cout << "Genre: " << genre << endl;
     cout << "Primary Console: " << primaryConsole << endl;
     cout << "Maximum Coop Count: " << maxCoopCount << endl;
@@ -162,7 +167,7 @@ Game& Game::operator=(const Game& other)
         rating = other.rating;
         primaryConsole = other.primaryConsole;
         maxCoopCount = other.maxCoopCount;
-        numStock = other.numStock;
+        //numStock = other.numStock;
     }
     return *this;
 }

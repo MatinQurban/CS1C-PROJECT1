@@ -28,7 +28,7 @@ int main()
     
     for (int i = 0; i < movies.size(); i++)
     {
-        cout << "Movie " << i + 1 << ": " << movies[i]->getTitle() << endl;
+        // cout << "Movie " << i + 1 << ": " << movies[i]->getTitle() << endl;
         disks.push_back(movies[i]);
     }
 
@@ -36,7 +36,7 @@ int main()
     
     for (int i = 0; i < games.size(); i++)
     {
-        cout << "Game " << i + 1 << ": " << games[i]->getTitle() << endl;
+        // cout << "Game " << i + 1 << ": " << games[i]->getTitle() << endl;
         disks.push_back(games[i]);
     }
 
@@ -121,28 +121,32 @@ int main()
                     cout << "You entered: " << diskName << endl;
                     cin.clear();
                     
-                    //========================================
-                    bool found = false;
-                    string name;
+                    // //========================================????????????
+                    // WHY IS THIS BLOCK DOING THIS????????????????
+                    // bool found = false;
+                    // string name;
                     
-                    for (const auto &disk : shelf->allDisks)
-                    {
-                        name = disk->getTitle();
+                    // for (const auto &disk : shelf->allDisks)
+                    // {
+                    //     name = disk->getTitle();
                         
-                        cout << "Comparing " << name << " to " << diskName << endl;
+                    //     cout << "Comparing " << name << " to " << diskName << endl;
                         
-                        if (disk->getTitle() == diskName)
-                        {
-                            cout << "\nWe have " << disk->getTitle() << " in stock!" << endl;
-                            found = true;
-                        }
-                    }
-                    //========================================
+                    //     if (disk->getTitle() == diskName)
+                    //     {
+                    //         cout << "\nWe have " << disk->getTitle() << " in stock!" << endl;
+                    //         found = true;
+                    //     }
+                    // }
+                    // //========================================????????????
 
-                    if (found) 
+                    if (shelf->checkStock(diskName)) 
                     {
-                        cout << "\nFound entry for: " << diskName << "." << endl;
+                        cout << "\nFound entry for: " << diskName << "." << endl << endl;
+                        
                         switchValid = true;
+
+                        cout << *(shelf->getDisk(diskName));
                     }
                     else
                     {
@@ -181,11 +185,11 @@ int main()
                     //select the game from the shelf
                     Disk* customerGame = shelf->getDisk(diskName);
                     
-                    cout << "Game Information:" << endl; //disk information
+                    cout << "\nGame Information:" << endl; //disk information
                     cout << "-----------------" << endl;
-                    customerGame->displayInfo();
+                    cout << *customerGame;
                     
-                    if (budget >= customerGame->getPrice())
+                    if (Ignoctio.getBudget() >= customerGame->getPrice())
                     {
                         //convert this portion of code to a transaction using transaction class.
                         //will need to overload new transaction function to take disk
@@ -193,17 +197,17 @@ int main()
 
                         cout << "You have bought " << customerGame->getTitle() << endl;
                         
-                        Ignoctio.setBudget(budget - customerGame->getPrice());
+                        Ignoctio.setBudget(Ignoctio.getBudget() - customerGame->getPrice());
                         
                         //also need to clear game from shelf 
                         //use itemPurchased function to decrement stock
-                        for (int i = 0; i < games.size(); i++)
-                        {
-                            if (games[i] == customerGame)
-                            {
-                                games[i]->itemPurchased();
-                            }
-                        }
+                        //for (int i = 0; i < games.size(); i++)
+                        //{
+                            //if (games[i] == customerGame)
+                            //{
+                                //games[i]->itemPurchased();
+                           // }
+                       // }
 
                         switchValid = true;
                     }
@@ -242,11 +246,11 @@ int main()
                     // select the disk from the shelf 
                     Disk* customerMovie = shelf->getDisk(diskName);
                     
-                    cout << "Movie Information:" << endl; //disk information
+                    cout << "\nMovie Information:" << endl; //disk information
                     cout << "-----------------" << endl;
-                    customerMovie->displayInfo();
+                    cout << *(customerMovie);
                     
-                    if (budget >= customerMovie->getPrice())
+                    if (Ignoctio.getBudget() >= customerMovie->getPrice())
                     {
                         //convert customer selection to a transaction using transaction class.
                         register1->newTransaction(customerMovie, diskType, Ignoctio);
@@ -254,17 +258,17 @@ int main()
                         cout << "Transaction Details: " << endl << endl;
                         cout << "You have bought " << customerMovie->getTitle() << endl;
                         
-                        Ignoctio.setBudget(budget - customerMovie->getPrice());
+                        Ignoctio.setBudget(Ignoctio.getBudget() - customerMovie->getPrice());
                         
                         //also need to clear disk from shelf
                         //use itemPurchased function to decrement stock
-                        for (int i = 0; i < games.size(); i++)
-                        {
-                            if (movies[i] == customerMovie)
-                            {
-                                movies[i]->itemPurchased();
-                            }
-                        }
+                        //for (int i = 0; i < games.size(); i++)
+                        //{
+                            //if (movies[i] == customerMovie)
+                           // {
+                               // movies[i]->itemPurchased();
+                           // }
+                       // }
 
                         switchValid = true;
                     }

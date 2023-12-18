@@ -7,7 +7,7 @@ Disk::Disk()
     synopsis = "";
     releaseYear = 0;
     rating = 0;
-    numStock = 3;
+    //numStock = 3;
 }
 
 Disk::Disk(string title, string genre, string synopsis, int releaseYear, int rating)
@@ -47,10 +47,10 @@ int Disk::getRating() const
     return rating;
 }
 
-int Disk::getStock() const
-{
-    return numStock;
-}
+//int Disk::getStock() const
+//{
+    //return numStock;
+//}
 
 void Disk::setTitle(string title)
 {
@@ -77,26 +77,30 @@ void Disk::setRating(int rating)
     this->rating = rating;
 }
 
-void Disk::setStock(int stock)
-{
-    this->numStock = stock;
-}
+//void Disk::setStock(int stock)
+//{
+    //this->numStock = stock;
+//}
 
-void Disk::itemPurchased()
+//void Disk::itemPurchased()
+//{
+    //numStock--;
+//}
+
+void Disk::displayInfo() const 
 {
-    numStock--;
+    cout << "Title: " << getTitle() << "." << endl; 
+    cout << "Genre: " << getGenre() << "." << endl; 
+    cout << "Synopsis: "  << getSynopsis() << "." << endl;
+    cout << "Release Year: " << getReleaseYear() << "." << endl;
+    cout << "Rating: " << getRating() << "." << endl;
+    cout << "Price: " << getPrice() << ".\n";
 }
 
 ostream& operator <<(ostream& out, const Disk &rhs)
 {
-      out << "Title: " << rhs.getTitle() << "." << endl; 
-      out << "Genre: " << rhs.getGenre() << "." << endl; 
-      out << "Synopsis: "  << rhs.getSynopsis() << "." << endl;
-      out << "Release Year: " << rhs.getReleaseYear() << "." << endl;
-      out << "Rating: " << rhs.getRating() << "." << endl;
-      out << "Price: " << rhs.getPrice() << ".\n";
-  
-    return out;   
+    rhs.displayInfo();
+    return out;
 }
 
 bool Disk::operator ==(const Disk& rhs) const 
@@ -118,3 +122,4 @@ bool Disk::operator !=(const Disk& rhs) const
            getRating() == rhs.getRating() &&
            getPrice() == rhs.getPrice());
 }
+

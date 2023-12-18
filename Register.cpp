@@ -124,9 +124,10 @@ void Register::newTransaction(const Disk* disk, const string& diskType, Customer
     allTransactions.push_back(Transaction_Info);
     
     customer.addTransaction(*Transaction_Info);
-    cout << "\nTransaction Completed!" << endl;
     
-    cout << "Transaction Details:" << endl << endl;
+    cout << "\nTransaction Completed!" << endl << endl;
+    cout << "Transaction Details:" << endl;
+    
     displayTransaction(Transaction_Info);
     
     dumpTransactions();

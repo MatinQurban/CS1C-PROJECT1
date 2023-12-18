@@ -26,6 +26,7 @@ class Movie : public Disk {
         void displayInfo() const override;
 
         double calculatePrice() const;
+    
     private:
         string leadingActor;
         string bluRayOrDVD;

@@ -21,20 +21,45 @@ void Shelf::addDisk(Disk *disk)
 
 bool Shelf::checkStock(const string& diskName)
 {
-    // Iterate through vector, look for diskName, return true if found, else, return false.
-    cout << "\n" << diskName << endl;
-    
-    for (const auto &disk : allDisks)
+  // Iterate through vector, look for diskName, return true if found, else,
+  // return false.
+  for (const auto &disk : allDisks) 
+  {
+    if (disk->getTitle().find(diskName) != -1) 
     {
+      return true;
+    }
+  }
+  return false;
+}
 
-        if (disk->getTitle() == diskName)
+Disk *Shelf::getDisk(const string &diskName) 
+{
+    string shelfDiskName;
+    string inputDiskName = diskName;
+    
+    for (const auto &disk : allDisks) 
+    {
+        shelfDiskName = disk->getTitle();
+        
+        // Deletes blank spaces when reading the game or movie title in the allDisk vector.
+        while (!shelfDiskName.empty() && isspace(shelfDiskName.back())) 
         {
-            cout << "\nWe have " << disk->getTitle() << " in stock!" << endl;
-            return true;
+            shelfDiskName.pop_back();
+        }
+
+        // cout << "Checking disk: " << shelfDiskName << endl; // Checking if diskname is correct
+
+        if (shelfDiskName == inputDiskName) 
+        {
+            return disk;
         }
     }
-    return false;
-}
+    
+    cout << "Disk not found: " << diskName << endl; 
+    
+    return nullptr;
+} 
 
 bool Shelf::removeDisk(const string& diskName)
 {
@@ -50,17 +75,17 @@ bool Shelf::removeDisk(const string& diskName)
     return false;
 }
 
-Disk* Shelf::getDisk(const string &diskName)
-{
-    for (int i = 0; i < allDisks.size(); i++)
-    {
-        if (allDisks[i]->getTitle() == diskName)
-        {
-            return allDisks[i];
-        }
-    }
-    return nullptr;
-}
+// Disk* Shelf::getDisk(const string &diskName)
+// {
+//     for (int i = 0; i < allDisks.size(); i++)
+//     {
+//         if (allDisks[i]->getTitle() == diskName)
+//         {
+//             return allDisks[i];
+//         }
+//     }
+//     return nullptr;
+// }
 
 // void Shelf::saveTransaction(const ostream& transactionFile, const string& diskName, const string& diskType, const string& price, const string& firstName, const string& lastName, const string& phoneNumber) const
 // {
